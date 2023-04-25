@@ -1,6 +1,10 @@
-#增加自编译脚本
+# 增加自编译脚本
 
 1、自己编译可以修改或增加action里的脚本，编译使用的库可以是你fork后自己的地址。默认是从我的库进行下载。
+修改自己要编译的机型
+![image](https://user-images.githubusercontent.com/39027157/234209770-f2185ebc-9a5b-4774-a799-f8c7dec8fc35.png)
+
+修改要使用的代码库
 ![image](https://user-images.githubusercontent.com/39027157/234205788-f4f4f94d-d5d8-4516-a3b0-526a5693615e.png)
 
 2、增减编译插件可以从3个地方修改，注意最好不要多个配置文件里有相同的项。特别是一个里面是y，另外一个又是n。
