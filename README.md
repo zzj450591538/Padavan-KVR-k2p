@@ -4,10 +4,13 @@
 ![image](https://user-images.githubusercontent.com/39027157/234205788-f4f4f94d-d5d8-4516-a3b0-526a5693615e.png)
 
 2、增减编译插件可以从3个地方修改，注意最好不要多个配置文件里有相同的项。特别是一个里面是y，另外一个又是n。
+
 1） 编辑action脚本增减
 ![image](https://user-images.githubusercontent.com/39027157/234206844-61d3c6cd-c703-4965-a657-baa592783ef3.png)
+
 2） 修改对应机型的编译配置文件
 ![image](https://user-images.githubusercontent.com/39027157/234207144-671527ac-b1c1-41e4-9479-6d343f7debce.png)
+
 3)  修改编译初始脚本里的增补配置
 ![image](https://user-images.githubusercontent.com/39027157/234207663-c936b306-4ada-4bca-ac68-c7879ce60185.png)
 
