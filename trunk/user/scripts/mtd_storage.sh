@@ -3,7 +3,7 @@
 result=0
 mtd_part_name="Storage"
 mtd_part_dev="/dev/mtdblock5"
-mtd_part_size=65536
+mtd_part_size=16777216
 dir_storage="/etc/storage"
 slk="/tmp/.storage_locked"
 tmp="/tmp/storage.tar"
@@ -54,7 +54,7 @@ func_load()
 	else
 		result=1
 		rm -f $hsh
-		logger -t "Storage load" "Invalid storage data in MTD partition: $mtd_part_dev"
+		logger -t "【mtd_storage.sh】" "MTD 分区中的无效存储数据: $mtd_part_dev"
 	fi
 	rm -f $tmp
 	rm -f $slk
@@ -68,7 +68,7 @@ func_tarb()
 	find * ! -type d -print0 | sort -z | xargs -0 tar -cf $tmp 2>/dev/null
 	cd - >>/dev/null
 	if [ ! -f "$tmp" ] ; then
-		logger -t "Storage" "Cannot create tarball file: $tmp"
+		logger -t "【mtd_storage.sh】" "无法创建压缩包文件: $tmp"
 		exit 1
 	fi
 }
@@ -77,7 +77,7 @@ func_save()
 {
 	local fsz
 
-	logger -t "Storage save" "Save storage files to MTD partition \"$mtd_part_dev\""
+	logger -t "【mtd_storage.sh】" "保存存储文件到storage闪存 \"$mtd_part_dev\"请勿断电!"
 	echo "Save storage files to MTD partition \"$mtd_part_dev\""
 	rm -f $tbz
 	md5sum -c -s $hsh 2>/dev/null
@@ -93,16 +93,16 @@ func_save()
 		mtd_write write $tbz $mtd_part_name
 		if [ $? -eq 0 ] ; then
 			echo "Done."
-			logger -t "Storage save" "Done."
+			logger -t "【mtd_storage.sh】" "已完成."
 		else
 			result=1
 			echo "Error! MTD write FAILED"
-			logger -t "Storage save" "Error write to MTD partition: $mtd_part_dev"
+			logger -t "【mtd_storage.sh】" "写入MTD分区时出错: $mtd_part_dev"
 		fi
 	else
 		result=1
 		echo "Error! Invalid storage final data size: $fsz"
-		logger -t "Storage save" "Invalid storage final data size: $fsz"
+		logger -t "【mtd_storage.sh】" "存储最终数据大小无效: $fsz"
 	fi
 	rm -f $tmp
 	rm -f $tbz
@@ -114,7 +114,7 @@ func_backup()
 	bzip2 -9 $tmp 2>/dev/null
 	if [ $? -ne 0 ] ; then
 		result=1
-		logger -t "Storage backup" "Cannot create BZ2 file!"
+		logger -t "【mtd_storage.sh】" "无法创建 BZ2 文件!"
 	fi
 	rm -f $tmp
 }
@@ -129,7 +129,7 @@ func_restore()
 	if [ -z "$fsz" ] || [ $fsz -lt 16 ] || [ $fsz -gt $mtd_part_size ] ; then
 		result=1
 		rm -f $tbz
-		logger -t "Storage restore" "Invalid BZ2 file size: $fsz"
+		logger -t "【mtd_storage.sh】" "BZ2 文件大小无效: $fsz"
 		return 1
 	fi
 
@@ -141,14 +141,14 @@ func_restore()
 		result=1
 		rm -f $tbz
 		rm -rf $tmp_storage
-		logger -t "Storage restore" "Unable to extract BZ2 file: $tbz"
+		logger -t "【mtd_storage.sh】" "无法提取 BZ2 文件: $tbz"
 		return 1
 	fi
 	if [ ! -f "$tmp_storage/start_script.sh" ] ; then
 		result=1
 		rm -f $tbz
 		rm -rf $tmp_storage
-		logger -t "Storage restore" "Invalid content of BZ2 file: $tbz"
+		logger -t "【mtd_storage.sh】" "BZ2 文件内容无效: $tbz"
 		return 1
 	fi
 
@@ -186,6 +186,8 @@ func_reset()
 
 func_fill()
 {
+        
+        
 	dir_httpssl="$dir_storage/https"
 	dir_dnsmasq="$dir_storage/dnsmasq"
 	dir_ovpnsvr="$dir_storage/openvpn/server"
@@ -207,6 +209,8 @@ func_fill()
 	script_vpnsc="$dir_storage/vpns_client_script.sh"
 	script_vpncs="$dir_storage/vpnc_server_script.sh"
 	script_ezbtn="$dir_storage/ez_buttons_script.sh"
+	script_gipv6="$dir_storage/getipv6.sh"
+	script_ipv6="$dir_storage/ipv6.sh"
 
 	user_hosts="$dir_dnsmasq/hosts"
 	user_dnsmasq_conf="$dir_dnsmasq/dnsmasq.conf"
@@ -218,6 +222,10 @@ func_fill()
 	user_sswan_ipsec_conf="$dir_sswan/ipsec.conf"
 	user_sswan_secrets="$dir_sswan/ipsec.secrets"
 	
+	if [ ! -d "/etc/storage/bin" ] ; then
+mkdir -p /etc/storage/bin
+fi
+
 	chnroute_file="/etc_ro/chnroute.bz2"
 	#gfwlist_conf_file="/etc_ro/gfwlist.bz2"
 
@@ -282,6 +290,7 @@ sync && echo 3 > /proc/sys/vm/drop_caches
 #ipset add gfwlist 8.8.4.4
 
 
+
 EOF
 		chmod 755 "$script_started"
 	fi
@@ -294,6 +303,7 @@ EOF
 ### Custom user script
 ### Called before router shutdown
 ### \$1 - action (0: reboot, 1: halt, 2: power-off)
+
 
 EOF
 		chmod 755 "$script_shutd"
@@ -309,25 +319,91 @@ EOF
 ### Called after internal iptables reconfig (firewall update)
 
 #wing resume
-
+### ipv6防火墙全关规则 以下把#去掉则关闭ip6防火墙 
+#ip6tables -F
+#ip6tables -X
+#ip6tables -P INPUT ACCEPT
+#ip6tables -P OUTPUT ACCEPT
+#ip6tables -P FORWARD ACCEPT
+### ipv6防火墙单独规则 开放3389远程桌面 其它端口按下方规则添加 以下把#去掉则生效
+#ip6tables -I FORWARD -p tcp --dport 3389 -j ACCEPT
+#ip6tables -I FORWARD -p tcp --dport 8829 -j ACCEPT
 EOF
 		chmod 755 "$script_postf"
 	fi
 
-	# create post-wan script
-	if [ ! -f "$script_postw" ] ; then
-		cat > "$script_postw" <<EOF
+# create gipv6 script
+
+if [ ! -f "$script_gipv6" ] ; then
+		cat > "$script_gipv6" <<EOF
+#!/bin/sh
+### Custom user script
+### getipv6
+#wing resume
+hostipv6=\`ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' |  grep -v fe80:: |tail -n 1\`
+echo \${hostipv6}
+EOF
+		chmod 755 "$script_gipv6"
+fi
+
+# create ipv6 script
+
+
+if [ ! -f "$script_ipv6" ] ; then
+		cat > "$script_ipv6" <<EOF
+#!/bin/sh
+### Custom user script
+### showipv6
+#wing resume
+cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$2","\$3","\$4","\$5","\$6} ' > /tmp/static_ipv6.inf
+EOF
+		chmod 755 "$script_ipv6"
+fi
+
+
+# create post-wan script
+
+if [ ! -f "$script_postw" ] ; then
+	cat > "$script_postw" <<EOF
 #!/bin/sh
 
-### Custom user script
 ### Called after internal WAN up/down action
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 
+#************微信推送*******************
+#自建微信推送申请地址：https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
+#教程：https://opt.cn2qq.com/opt-file/测试号配置.pdf
+#1.下方填写申请的appid=（= 中间必须要留有空格）例如=  wx9137fdf261df9f7d
+#wx_appid= 
+#2.下方填写申请的appsecret=（= 中间必须要留有空格）例如=  b2a0256470a6cf7e3f3a9e63c8197560
+#wx_appsecret= 
+#3.下方填写申请的微信号=（= 中间必须要留有空格）例如=  ok5hz6FNykEAX9X7VnKuFd7YCPqg
+#wxsend_touser= 
+#4.下方填写申请的模板ID=（= 中间必须要留有空格）例如=  pHc01IZWHyM3NOC-8vQ26XAB-mApPLrWVZI1A29iSj0
+#wxsend_template_id= 
+#*****以下功能推送脚本路径：/etc/storage/wxsendfile.sh **********
+#1.下方填= 1启用WAN口IP变动推送 （= 中间必须要留有空格）例如= 1
+#wxsend_notify_1= 1 
+#2.下方填= 1启用设备接入推送（= 中间必须要留有空格）例如= 1
+#wxsend_notify_2= 1
+#3.下方填= 1启用设备上、下线推送（= 中间必须要留有空格）例如= 1
+#wxsend_notify_3= 1
+#4.下方填= 1启用自定义内容推送（= 中间必须要留有空格）例如= 1
+#wxsend_notify_4= 1
+#4.自定义教程：自建微信推送脚本ipv6进程守护循环检测https://www.right.com.cn/forum/thread-8282061-1-1.html
+#5.下方填= 循环检测的时间，每隔多少秒检测一次 秒为单位（= 中间必须要留有空格）例如三分钟= 180
+#wxsend_time= 60
+#6.下方代码去掉前面的#,表示启用微信推送开机自启
+#/etc/srotage/wxsend.sh start &
+#************微信推送*******************
+
+
 EOF
-		chmod 755 "$script_postw"
-	fi
+
+	chmod 755 "$script_postw"
+fi
 
 	# create inet-state script
 	if [ ! -f "$script_inets" ] ; then
@@ -494,6 +570,9 @@ dhcp-option=252,"\n"
 
 ### Log for all queries
 #log-queries
+
+### Keep DHCP host name valid at any times
+#dhcp-to-host
 
 EOF
 	if [ -f /usr/bin/vlmcsd ]; then
