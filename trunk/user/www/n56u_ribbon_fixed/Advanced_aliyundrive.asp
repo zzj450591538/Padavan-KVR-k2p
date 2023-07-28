@@ -187,7 +187,7 @@ function done_validating(action){
 
 										</tr>
 										<tr>
-										<th>http网页访问端口</th>
+										<th>http主页访问端口</th>
 				<td>
 					<input type="text" class="input" name="ald_port" id="ald_port" style="width: 200px" value="<% nvram_get_x("","ald_port"); %>" />
 				</td>
