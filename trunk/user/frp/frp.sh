@@ -2,16 +2,35 @@
 frpc_enable=`nvram get frpc_enable`
 frps_enable=`nvram get frps_enable`
 http_username=`nvram get http_username`
-
+frpc="/tmp/frpc"
+frps="/tmp/frps"
+[ -f /etc/storage/frpc ] && frpc="/etc/storage/frpc"
+[ -f /etc/storage/frps ] && frpc="/etc/storage/frps"
 check_frp () 
 {
 	check_net
 	result_net=$?
 	if [ "$result_net" = "1" ] ;then
 		if [ -z "`pidof frpc`" ] && [ "$frpc_enable" = "1" ];then
+  frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
+  if [ ! -f $frpc ] ;then
+  wgetcurl.sh "/tmp/var/frp_linux_mipsle.tar.gz" "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
+  mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
+  rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
+  chmod 777 "$frpc"
+  fi
 			frp_start
 		fi
 		if [ -z "`pidof frps`" ] && [ "$frps_enable" = "1" ];then
+   frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
+  if [ ! -f $frps ] ;then
+  wgetcurl.sh "/tmp/var/frp_linux_mipsle.tar.gz" "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
+  mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
+  rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
+  chmod 777 "$frps"
+  fi
 			frp_start
 		fi
 	fi
@@ -27,14 +46,26 @@ check_net()
 		logger -t "frp" "检测到互联网未能成功访问,稍后再尝试启动frp"
 	fi
 }
-
+frp_version
 frp_start () 
 {
+frpc_tag="`$frpc --version`"
+frps_tag="`$frps --version`"
+[ "$frpc_enable" = "1" ] && [ ! -z "$frpc_enable" ] && rm -rf $frpc && check_frp
+[ "$frps_enable" = "1" ] && [ ! -z "$frps_enable" ] && rm -rf $frps && check_frp
 	/etc/storage/frp_script.sh
-	sed -i '/frp/d' /etc/storage/cron/crontabs/$http_username
+ if [ "$frpc_enable" = "1" ];then
+	sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
 	cat >> /etc/storage/cron/crontabs/$http_username << EOF
-*/1 * * * * /bin/sh /usr/bin/frp.sh C >/dev/null 2>&1
+*/1 * * * * test -z "\`pidof frpc\`" && /usr/bin/frp.sh C >/dev/null 2>&1
 EOF
+fi
+ if [ "$frps_enable" = "1" ];then
+	sed -i '/frps/d' /etc/storage/cron/crontabs/$http_username
+	cat >> /etc/storage/cron/crontabs/$http_username << EOF
+*/1 * * * * test -z "\`pidof frps\`" && /usr/bin/frp.sh C >/dev/null 2>&1
+EOF
+fi
 	[ ! -z "`pidof frpc`" ] && logger -t "frp" "frpc启动成功"
 	[ ! -z "`pidof frps`" ] && logger -t "frp" "frps启动成功"
 }
@@ -42,20 +73,19 @@ EOF
 frp_close () 
 {
 	if [ "$frpc_enable" = "0" ]; then
+ sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
 		if [ ! -z "`pidof frpc`" ]; then
 		killall -9 frpc frp_script.sh
 		[ -z "`pidof frpc`" ] && logger -t "frp" "已停止 frpc"
 	    fi
 	fi
 	if [ "$frps_enable" = "0" ]; then
+ sed -i '/frps/d' /etc/storage/cron/crontabs/$http_username
 		if [ ! -z "`pidof frps`" ]; then
 		killall -9 frps frp_script.sh
 		[ -z "`pidof frps`" ] && logger -t "frp" "已停止 frps"
 	    fi
 	fi
-	if [ "$frpc_enable" = "0" ] && [ "$frps_enable" = "0" ]; then
-	sed -i '/frp/d' /etc/storage/cron/crontabs/$http_username
-    fi
 }
 
 
