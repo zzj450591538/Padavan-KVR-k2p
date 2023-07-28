@@ -11,11 +11,12 @@ F="$D/`nvram get http_username`"
 zerotier_restart () {
 if [ -z "`pidof zerotier-one`" ] ; then
     logger -t "ZeroTier" "重新启动"
+    stop_zero
     zerotier_start
 fi
 }
 zerotier_keep  () {
-[ ! -z "`pidof zerotier-one`" ] && logger -t "¡¾ZeroTier¡¿" "Æô¶¯³É¹¦"
+[ ! -z "`pidof zerotier-one`" ] && logger -t "ZeroTier" "启动成功"
 logger -t "ZeroTier" "守护进程启动"
 sed -Ei '/ZeroTier守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
@@ -65,7 +66,9 @@ zero_dl() {
 start_zero
 }
 start_zero() {
-	logger -t "zerotier" "正在启动zerotier"
+zero_enable=`nvram get zerotier_enable`
+if [ "$zero_enable" = "1" ] ; then
+logger -t "zerotier" "正在启动zerotier"
  killall -9 zerotier-one
 SVC_PATH="/etc/storage/bin/zerotier-one"
 tag="$( curl -k --connect-timeout 20 -s https://api.github.com/repos/lmq8267/ZeroTierOne/releases/latest  | grep 'tag_name' | cut -d\" -f4 )"
@@ -135,6 +138,7 @@ fi
        fi
  start_instance
  zerotier_keep 
+ fi
 } 
 start_instance() {
 	port=""
@@ -358,8 +362,10 @@ start)
 stop)
 	stop_zero
 	;;
+restart)
+	zerotier_restart
+	;;
 *)
-	echo "check"
-	#exit 0
+	zerotier_restart
 	;;
 esac
