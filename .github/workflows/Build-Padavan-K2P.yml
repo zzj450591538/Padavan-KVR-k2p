@@ -61,7 +61,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_CADDY=y" >> .config #删除配置项zerotier
         echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=y" >> .config #删除配置项zerotier
         echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=y" >> .config #删除配置项zerotier
-        echo "CONFIG_FIRMWARE_INCLUDE_WYY/d' .config #删除配置项zerotier
+        echo "CONFIG_FIRMWARE_INCLUDE_WYY=y" >> .config #删除配置项zerotier
         echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=y" >> .config #删除配置项zerotier
         echo "CONFIG_FIRMWARE_INCLUDE_DDNSTO=y" >> .config #删除配置项zerotier
         echo "CONFIG_FIRMWARE_INCLUDE_ALDRIVER=y" >> .config #删除配置项zerotier
