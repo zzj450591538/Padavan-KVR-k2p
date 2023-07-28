@@ -66,7 +66,7 @@ wxsend_close () {
   sed -Ei '/微信推送守护进程|^$/d' "$F"
   killall wxsendfile.sh
   killall -9 wxsendfile.sh
-  rm -rf /etc/storage/wxsendfile.sh
+  
   sleep 3
 [ -z "`pidof wxsendfile.sh`" ] && logger -t "【微信推送】" "进程已关闭"
 }
@@ -74,7 +74,7 @@ wxsend_close () {
 wxsend_start () {
  killall wxsendfile.sh
  killall -9 wxsendfile.sh
- rm -rf /etc/storage/wxsendfile.sh
+ 
  if [ ! -f "/etc/storage/wxsendfile.sh" ] || [ ! -s "/etc/storage/wxsendfile.sh" ] ; then
          cat > "/etc/storage/wxsendfile.sh" <<-\EEE
 #!/bin/bash
@@ -166,7 +166,7 @@ if [ "$wxsend_notify_1" = "1" ] ; then
         lastIP4=$(lastIPAddress4)
     fi
     if [ "$lastIP4" != "$hostIP4" ] && [ ! -z "$hostIP4" ] ; then
-       /etc/storage/wxsend20.sh send_message "【WAN口IPV4变动】" "目前`nvram get computer_name` IP: ${hostIP4}" "上次 IP: ${lastIP4} " &
+       wx_send.sh send_message "【WAN口IPV4变动】" "目前`nvram get computer_name` IP: ${hostIP4}" "上次 IP: ${lastIP4} " &
         echo -n $hostIP4 > /etc/storage/wxsend_lastIPAddress4
     fi
     if [ "$lastIP6" != "$hostIP6" ] && [ ! -z "$hostIP6" ] ; then
@@ -176,7 +176,7 @@ if [ "$wxsend_notify_1" = "1" ] ; then
         lastIP6=$(lastIPAddress6)
     fi
     if [ "$lastIP6" != "$hostIP6" ] && [ ! -z "$hostIP6" ] ; then
-       /etc/storage/wxsend20.sh send_message "【WAN口IPV6变动】" "目前`nvram get computer_name` IP: ${hostIP6}" "上次 IP: ${lastIP6}" &
+       wx_send.sh send_message "【WAN口IPV6变动】" "目前`nvram get computer_name` IP: ${hostIP6}" "上次 IP: ${lastIP6}" &
         echo -n $hostIP6 > /etc/storage/wxsend_lastIPAddress6
     fi
 fi
@@ -195,7 +195,7 @@ if [ "$wxsend_notify_2" = "1" ] ; then
     if [ -s "/tmp/var/wxsend_newhostname不重复.txt" ] ; then
         content=`cat /tmp/var/wxsend_newhostname不重复.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==1 {print $1}')"`
 	content2=`cat /tmp/var/wxsend_newhostname不重复.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==2 {print $1}')"`
-        /etc/storage/wxsend20.sh send_message "【`nvram get computer_name`新设备加入】" "${content}" "${content2}" &
+        wx_send.sh send_message "【`nvram get computer_name`新设备加入】" "${content}" "${content2}" &
          cat /tmp/var/wxsend_newhostname不重复.txt | grep -v "^$" >> /etc/storage/wxsend_hostname.txt
     fi
 fi
@@ -215,7 +215,7 @@ if [ "$wxsend_notify_3" = "1" ] ; then
     if [ -s "/tmp/var/wxsend_newhostname不重复_上线.txt" ] ; then
         content=`cat /tmp/var/wxsend_newhostname不重复_上线.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==1 {print $1}')"`
 	content2=`cat /tmp/var/wxsend_newhostname不重复_上线.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==2 {print $1}')"`
-       /etc/storage/wxsend20.sh send_message "【`nvram get computer_name`设备上线提醒】" "${content}" "${content2}" &
+       wx_send.sh send_message "【`nvram get computer_name`设备上线提醒】" "${content}" "${content2}" &
         cat /tmp/var/wxsend_newhostname不重复_上线.txt | grep -v "^$" >> /etc/storage/wxsend_hostname_上线.txt
     fi
     # 下线
@@ -223,19 +223,19 @@ if [ "$wxsend_notify_3" = "1" ] ; then
     if [ -s "/tmp/var/wxsend_newhostname不重复_下线.txt" ] ; then
         content=`cat /tmp/var/wxsend_newhostname不重复_下线.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==1 {print $1}')"`
 	content2=`cat /tmp/var/wxsend_newhostname不重复_下线.txt | grep -v "^$" | sed "s#[^^]\([0-9]\.\) #\n\1 #g" | awk 'NR==2 {print $1}')"`
-       /etc/storage/wxsend20.sh send_message "【`nvram get computer_name`设备下线提醒】" "${content}" "${content2}" &
+       wx_send.sh send_message "【`nvram get computer_name`设备下线提醒】" "${content}" "${content2}" &
         cat /tmp/var/wxsend_newhostname.txt | grep -v "^$" > /etc/storage/wxsend_hostname_上线.txt
     fi
 fi
 if [ "$wxsend_notify_4" = "1" ] ; then
   # 进程守护推送
   #自定义添加推送内容 下面的内容 内容2 是每段不能超过20个字 所以内容只能20个字 多的填在内容2里 
-  #微信推送命令格式： /etc/storage/wxsend.sh send_message "【标题】" "内容" "内容2" & 
+  #微信推送命令格式： wx_send.sh send_message "【标题】" "内容" "内容2" & 
   #例如检测zerotier进程是否掉了 如下
   #if [ -z "`pidof zerotier-one`" ]  ; then
   #killall -9 zerotier-one
   #  zerotier.sh start
-  # /etc/storage/wxsend.sh send_message "【`nvram get computer_name`进程掉线】" "zerotier掉线，重新启动" &
+  # wx_send.sh send_message "【`nvram get computer_name`进程掉线】" "zerotier掉线，重新启动" &
   # fi
 
   echo 测试
