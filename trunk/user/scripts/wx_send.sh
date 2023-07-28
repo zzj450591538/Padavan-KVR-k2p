@@ -1,23 +1,16 @@
 #!/bin/bash
 #copyright by hiboy
 
-#测试号申请地址：https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
-#使用教程：https://opt.cn2qq.com/opt-file/测试号配置.pdf
-#官网新建模板内容必须为{{1.DATA}} {{2.DATA}}{{3.DATA}} {{4.DATA}}{{5.DATA}} {{6.DATA}} 
-
-#appid：
-wxsend_appid=wx91374521du92f9a6d
-
-#appsecret：
-wxsend_appsecret=b2a02552wf82xa2r0d65x8197560
-
-#微信号：
-wxsend_touser=ok5hz6FH118JI20shyFd7YCPqg
-
-#模板ID:
-wxsend_template_id=pHcIGVV55sfgOC-8mYG4sAB-mApPONBSA2fc2bj0
-
-#推送功能在下方102行，修改你开启推送的功能，默认全部开启的
+wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk '{print $2}')
+wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk '{print $2}')
+wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk '{print $2}')
+wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk '{print $2}')
+wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk '{print $2}')
+wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk '{print $2}')
+wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk '{print $2}')
+wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk '{print $2}')
+wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk '{print $2}')
+[ -z "$wxtime" ] && wxtime=60
 
 D="/etc/storage/cron/crontabs"
 F="$D/`nvram get http_username`"
@@ -86,19 +79,16 @@ wxsend_start () {
          cat > "/etc/storage/wxsendfile.sh" <<-\EEE
 #!/bin/bash
 
-#这里修改你要推送的功能 去掉1表示不启用 填=1 表示启用 自定义推送还需要往下自己添加命令 在253行
-
-#WAN口IP变动 启用填=1
-wxsend_notify_1=1
-
-#设备接入提醒 启用填=1
-wxsend_notify_2=1
-
-#设备上、下线提醒 启用填=1
-wxsend_notify_3=1
-
-#自定义推送提醒 启用填=1
-wxsend_notify_4=1
+wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk '{print $2}')
+wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk '{print $2}')
+wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk '{print $2}')
+wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk '{print $2}')
+wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk '{print $2}')
+wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk '{print $2}')
+wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk '{print $2}')
+wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk '{print $2}')
+wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk '{print $2}')
+[ -z "$wxtime" ] && wxtime=60
 
 mkdir -p /tmp/var
 resub=1
@@ -260,8 +250,8 @@ else
 echo "Internet down 互联网断线"
 resub=1
 fi
-#下方为循环检测时间，每隔多久检测一次，单位为秒 如下60 表示每隔一分钟
-sleep 60
+
+sleep $wxtime
 continue
 done
 
