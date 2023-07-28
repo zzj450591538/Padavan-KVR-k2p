@@ -2373,7 +2373,7 @@ static int dns2tcp_status_hook(int eid, webs_t wp, int argc, char **argv)
 #if defined (APP_ALDRIVER)
 static int aliyundrive_status_hook(int eid, webs_t wp, int argc, char **argv)
 {
-	int aliyundrive_status_code = pids("aliyundrive-webdav");
+	int aliyundrive_status_code = pids("alist");
 	websWrite(wp, "function aliyundrive_status() { return %d;}\n", aliyundrive_status_code);
 	return 0;
 }
