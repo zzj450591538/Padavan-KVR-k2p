@@ -218,7 +218,7 @@ function showMRULESList(){
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">
-									<p>Zerotier是一个开源，跨平台，而且适合内网穿透互联的傻瓜配置虚拟 VPN LAN<br>
+									<p>Zerotier是一个开源，跨平台，而且适合内网穿透异地组网的傻瓜配置虚拟 VPN LAN<br>
 									</p>
 									</div>
 
@@ -305,7 +305,7 @@ function showMRULESList(){
 										</tr>
 									</table>
 <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
-	<tr> <th colspan="4">需要访问其它zerotier的内网LAN网段,IP和网关和zerotier后台对应即可(本机的LAN网段不用填进去)</th></tr>
+	<tr> <th colspan="4">需要访问其它内网LAN网段，填写对应IP和网关即可(zerotier官网添加过的这里不需要再填写)</th></tr>
                                         <tr id="row_rules_caption">
 										 
                                             <th width="10%">
