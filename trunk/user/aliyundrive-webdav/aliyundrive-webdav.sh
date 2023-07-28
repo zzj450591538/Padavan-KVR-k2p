@@ -421,7 +421,7 @@ fi
     *)
       kill_ald ;;
   esac
-}  
+
 
 }
 kill_ald() {
