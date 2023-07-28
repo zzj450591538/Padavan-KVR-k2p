@@ -436,6 +436,8 @@ arDdnsCheck() {
 		postRS=$(arDdnsUpdate $1 $2)
 		if [ $? -eq 0 ]; then
 			echo "postRS: ${postRS}"
+                 nvram set aliddns_record_id="$aliddns_record_id"
+	         nvram set aliddns_last_act="`date "+%Y-%m-%d %H:%M:%S"`   成功更新：$hostIP"
 			logger -t "【AliDDNS动态域名】" "更新动态DNS记录成功！"
 			return 0
 		else
