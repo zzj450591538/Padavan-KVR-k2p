@@ -1,4 +1,4 @@
-SRC_NAME=miniupnpd-2.0
+SRC_NAME=miniupnpd-2.x
 SRC_URL=http://miniupnp.free.fr/files/download.php?file=$(SRC_NAME).tar.gz
 
 # reference to iptables package
@@ -10,10 +10,7 @@ ENABLE_IPV6:=1
 
 IPTABLESPATH=$(ROOTDIR)/user/iptables/$(IPT_VERSION)
 
-#all: download_test extract_test
-all:
-	cd $(SRC_NAME) && ./configure
-	$(MAKE) -C $(SRC_NAME) IPTABLESPATH=$(IPTABLESPATH) ENABLE_IPV6=$(ENABLE_IPV6)
+all: download_test extract_test make
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
@@ -23,9 +20,10 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xzf $(SRC_NAME).tar.gz; \
-		patch -d $(SRC_NAME) -p1 -i ../miniupnpd-orig.patch; \
 	fi )
-
+make:
+	cd $(SRC_NAME) && ./configure
+	$(MAKE) -C $(SRC_NAME) IPTABLESPATH=$(IPTABLESPATH) ENABLE_IPV6=$(ENABLE_IPV6)
 clean:
 	$(MAKE) -C $(SRC_NAME) clean
 	rm -f miniupnpd
