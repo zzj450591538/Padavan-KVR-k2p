@@ -916,8 +916,8 @@ menu5_34_1=FRPC
 menu5_34_2=NPC
 menu5_35=WIREGUARD
 menu5_35_1=WIREGUAED
-menu5_36=阿里云盘
-menu5_36_1=阿里云盘
+menu5_36=Alist
+menu5_36_1=Alist
 menu5_1_1=一般设置
 menu5_1_2=访客网络
 menu5_1_3=无线桥接
@@ -1079,7 +1079,7 @@ Step3_desp=设置成功!
 AiDisk_Step1_helptitle=创建访问权限
 AiDisk_Step2_helptitle=设置 DDNS 服务
 AiDisk_Step3_helptitle=设置共享磁盘
-AiDisk_Step1_help=ZVMODELVZ 提供了三种类型的权限：<p>1. 匿名访问：无需账号和密码，任何人都可以访问 FTP 服务器。</p><p>2. 账号访问：ZVMODELVZ 默认创建 [admin/Family] 账号，用户需使用授权账号访问 FTP 服务器。</p><p>3. 管理员访问：ZVMODELVZ 系统默认创建 [admin] 账号，该账号具有全部的访问权限。</p><p>注：修改权限类型会清除已有的帐号设置数据。</p>
+AiDisk_Step1_help=提供了三种类型的权限：<p>1. 匿名访问：无需账号和密码，任何人都可以访问 FTP 服务器。</p><p>2. 账号访问：ZVMODELVZ 默认创建 [admin/Family] 账号，用户需使用授权账号访问 FTP 服务器。</p><p>3. 管理员访问：ZVMODELVZ 系统默认创建 [admin] 账号，该账号具有全部的访问权限。</p><p>注：修改权限类型会清除已有的帐号设置数据。</p>
 AiDisk_Step1_help2=注:账号管理功能无法在 NTFS 格式的硬盘中使用。
 AiDisk_Step2_help=使用华硕 DDNS 服务可以快速创建一个使用动态 IP 地址的域名。<p>若需使用其它服务商的 DDNS 服务，请打开<a href='/Advanced_DDNS_Content.asp' target='_top'>动态域名解析</a>进行设置</p>
 AiDisk_Step3_help=<a href='../Advanced_AiDisk_samba.asp' target='_top'>网上邻居</a>: 更多专业的网上邻居设置。<br/><a href='../Advanced_AiDisk_ftp.asp' target='_top'>FTP 共享</a>: 更多专业的 FTP 服务器设置。
@@ -1302,9 +1302,9 @@ OP_desc1=ZVMODELVZ 支持多种满足不同需求的操作模式。请选择能�
 PASS_new=新密码:
 PASS_retype=确认新密码:
 FW_desc1=请按以下步骤进行操作:
-FW_desc2=打开 <a href="ZVDWURLVZ" target="blank">ASUS RT-N56U 固件定制网站</a> 或 <a href="https://github.com/chongshengB/rt-n56u/releases" target="blank">此处</a> 查看是否有固件更新。
-FW_desc3=下载最新版本的固件。
-FW_desc4=在 [固件文件] 选项中选择已下载的固件。
+FW_desc2=打开 <a href="" target="blank">Padavan-KVR 源码网站</a> 自行编译。
+FW_desc3=下载编译好的的固件。
+FW_desc4=进入breed里固件更新选择已下载的固件。
 FW_desc5=点击 [上传] 将文件上传到路由器。
 FW_desc6=上传完成后，系统会对固件进行检查然后升级。升级需要大约 2-3 分钟时间，结束后系统将自动重启。
 FW_item1=产品型号:
@@ -1314,7 +1314,7 @@ FW_item4=硬件版本:
 FW_item5=固件文件:
 FW_note=注意:
 FW_n1=升级固件不会清空原有的设置参数。
-FW_n2=如果升级失败，路由器会自动进入救援模式，此时需要使用光盘中的固件恢复工具进行系统恢复。
+FW_n2=为避免不可预知的问题，请一定要在breed里进行刷机升级固件。
 FIRM_ok_title=成功升级固件。
 FIRM_ok_desc=正在升级固件，升级过程大约需要 2-3 分钟时间。
 FIRM_fail_desc=升级固件失败，你可以在系统日志中查看详细原因。请检查固件版本后再次升级。
