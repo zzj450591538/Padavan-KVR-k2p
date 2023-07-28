@@ -288,8 +288,8 @@ sync && echo 3 > /proc/sys/vm/drop_caches
 #wing <HOST:443> <PASS>
 #wing 192.168.1.9:1080
 #ipset add gfwlist 8.8.4.4
-#解决iOS设备访问慢
-echo 0 > /proc/sys/net/ipv4/tcp_tw_recycle
+#iOS设备访问慢？
+#echo 0 > /proc/sys/net/ipv4/tcp_tw_recycle
 
 EOF
 		chmod 755 "$script_started"
