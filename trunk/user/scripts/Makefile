@@ -11,6 +11,7 @@ romfs:
 	$(ROMFSINST) /sbin/mtd_storage.sh
 	$(ROMFSINST) /sbin/wgetcurl.sh
 	$(ROMFSINST) /sbin/check_disk_size
+	$(ROMFSINST) /sbin/wx_send.sh
 	$(ROMFSINST) -p +x $(THISDIR)/copyscripts.sh /usr/bin/copyscripts.sh
 	$(ROMFSINST) -p +x $(THISDIR)/autostart.sh /usr/bin/autostart.sh
 ifeq ($(STORAGE_ENABLED),y)
