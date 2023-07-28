@@ -767,7 +767,7 @@ struct nvram_pair router_defaults[] = {
 	/* AdguargHome */
 	{ "adg_enable", "0" },
 	{ "adg_redirect", "0" },
-	{ "adg_link", "https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome" },
+	{ "adg_link", "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome" },
 #endif
 
 #if defined(APP_CADDY)
@@ -876,17 +876,17 @@ struct nvram_pair router_defaults[] = {
 	/*阿里云盘*/
 	{ "aliyundrive_enable", "0" },
 	{ "ald_refresh_token", "" },
-	{ "ald_auth_user", "" },
-	{ "ald_auth_password", "" },
-	{ "ald_read_buffer_size", "10485760" },
-	{ "ald_cache_size", "1000" },
-	{ "ald_cache_ttl", "600" },
-	{ "ald_host", "0.0.0.0" },
-	{ "ald_port", "8089" },
-	{ "ald_root", "/" },
-	{ "ald_domain_id", "0" },
-	{ "ald_no_trash", "0" },
-	{ "ald_read_only", "0" },
+	{ "ald_auth_user", "/tmp/alist/data/data.db" },
+	{ "ald_auth_password", "/tmp/alist/temp" },
+	{ "ald_read_buffer_size", "/tmp/alist/bleve" },
+	{ "ald_cache_size", "false" },
+	{ "ald_cache_ttl", "/tmp/alist/log/log.log" },
+	{ "ald_host", "-1" },
+	{ "ald_port", "5244" },
+	{ "ald_root", "48" },
+	{ "ald_domain_id", "0.0.0.0" },
+	{ "ald_no_trash", "" },
+	{ "ald_read_only", "" },
 #endif
 
 	/* DHCP server parameters */
