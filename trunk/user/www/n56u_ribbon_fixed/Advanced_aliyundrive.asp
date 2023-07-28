@@ -143,7 +143,7 @@ function done_validating(action){
 										<tr>
 											<th>Alist WEB界面</th>
 											<td>
-				<input type="button" class="btn btn-success" value="访问Alist面板" onclick="button_ald_port()" size="0">
+				<input type="button" class="btn btn-success" value="Alist主页" onclick="button_ald_port()" size="0">
 											</td>
 										</tr>
 										<tr> <th><#running_status#></th>
