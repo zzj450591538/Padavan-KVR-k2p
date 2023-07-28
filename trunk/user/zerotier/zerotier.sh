@@ -55,11 +55,11 @@ sleep 20
 [ -n "$ip33" ] && ping_loss3=`echo $ping_zero3 | awk -F ', ' '{print $3}' | awk '{print $1}'`
 [ -n "$ip44" ] && ping_loss4=`echo $ping_zero4 | awk -F ', ' '{print $3}' | awk '{print $1}'`
 [ -n "$ip55" ] && ping_loss5=`echo $ping_zero5 | awk -F ', ' '{print $3}' | awk '{print $1}'`
-[ ! -z "$ping_time1" ] && logger -t "ZeroTier" 节点"$ip11".1，延迟:$ping_time1 ms 丢包率:$ping_loss1 "
-[ ! -z "$ping_time2" ] && logger -t "ZeroTier" 节点"$ip22".1，延迟:$ping_time2 ms 丢包率:$ping_loss2 "
-[ ! -z "$ping_time3" ] && logger -t "ZeroTier" 节点"$ip33".1，延迟:$ping_time3 ms 丢包率:$ping_loss3 "
-[ ! -z "$ping_time4" ] && logger -t "ZeroTier" 节点"$ip44".1，延迟:$ping_time4 ms 丢包率:$ping_loss4 "
-[ ! -z "$ping_time5" ] && logger -t "ZeroTier" 节点"$ip55".1，延迟:$ping_time5 ms 丢包率:$ping_loss5 "
+[ ! -z "$ping_time1" ] && logger -t "ZeroTier" "节点"$ip11".1，延迟:$ping_time1 ms 丢包率:$ping_loss1 "
+[ ! -z "$ping_time2" ] && logger -t "ZeroTier" "节点"$ip22".1，延迟:$ping_time2 ms 丢包率:$ping_loss2 "
+[ ! -z "$ping_time3" ] && logger -t "ZeroTier" "节点"$ip33".1，延迟:$ping_time3 ms 丢包率:$ping_loss3 "
+[ ! -z "$ping_time4" ] && logger -t "ZeroTier" "节点"$ip44".1，延迟:$ping_time4 ms 丢包率:$ping_loss4 "
+[ ! -z "$ping_time5" ] && logger -t "ZeroTier" "节点"$ip55".1，延迟:$ping_time5 ms 丢包率:$ping_loss5 "
 
 }
 zero_dl() {
