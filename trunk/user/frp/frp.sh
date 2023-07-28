@@ -48,7 +48,7 @@ check_net()
 		logger -t "frp" "检测到互联网未能成功访问,稍后再尝试启动frp"
 	fi
 }
-frp_version
+
 frp_start () 
 {
 frpc_tag="`$frpc --version`"
