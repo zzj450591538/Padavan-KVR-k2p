@@ -9,8 +9,8 @@ SRC_URL = https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/
 HAMCORE_DIR = $(SRC_VER)/src/bin/BuiltHamcoreFiles/unix
 CFLAGS += -minterlink-mips16
 
-all: download_test extract_test put_hamcore
-	$(MAKE) -j$(HOST_NCPU) -C $(SRC_VER) -f src/makefiles/linux_32bit.mak
+all: download_test 
+	
 
 download_test:
 	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
@@ -39,21 +39,4 @@ put_hamcore:
 	)
 
 romfs:
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_CMD),y)
-	$(ROMFSINST) -d -p +x $(THISDIR)/$(SRC_VER)/bin/vpncmd/vpncmd /etc_ro/softethervpn/vpncmd
-endif
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_CLIENT),y)
-	$(ROMFSINST) -d -p +x $(THISDIR)/$(SRC_VER)/bin/vpnclient/vpnclient /etc_ro/softethervpn/vpnclient
-endif
-ifeq ($(CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_SERVER),y)
-	$(ROMFSINST) -d -p +x $(THISDIR)/$(SRC_VER)/bin/vpnserver/vpnserver /etc_ro/softethervpn/vpnserver
-endif
-	$(ROMFSINST) -d -S $(THISDIR)/hamcore-unix/$(SRC_VER)/hamcore.se2 /etc_ro/softethervpn/hamcore.se2
-	$(ROMFSINST) -d -S $(THISDIR)/$(SRC_VER)/tmp/objs/Mayaqua/libMayaqua.so /lib/libMayaqua.so
-	$(ROMFSINST) -d -S $(THISDIR)/$(SRC_VER)/tmp/objs/Cedar/libCedar.so /lib/libCedar.so
-	$(ROMFSINST) $(THISDIR)/softethervpn.sh /usr/bin/softethervpn.sh
 
-clean:
-	if [ -d $(SRC_VER) ]; then \
-		$(MAKE) -C $(SRC_VER) -f src/makefiles/linux_32bit.mak clean ; \
-	fi
