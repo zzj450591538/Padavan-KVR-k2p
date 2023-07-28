@@ -10,22 +10,15 @@ ENABLE_IPV6:=1
 
 IPTABLESPATH=$(ROOTDIR)/user/iptables/$(IPT_VERSION)
 
-all: download_test extract_test make
-
-download_test:
-	( if [ ! -f $(SRC_NAME).tar.gz ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).tar.gz $(SRC_URL); \
-	fi )
-
-extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar xzf $(SRC_NAME).tar.gz; \
-	fi )
-make:
-	cd $(SRC_NAME) && ./configure
-	$(MAKE) -C $(SRC_NAME) IPTABLESPATH=$(IPTABLESPATH) ENABLE_IPV6=$(ENABLE_IPV6)
+all: tar
+	cd $(SRC_NAME) && ./genconfig.sh --ipv6 --igd2
+	$(MAKE) -f Makefile.linux -C $(SRC_NAME) IPTABLESPATH=$(IPTABLESPATH) ENABLE_IPV6=$(ENABLE_IPV6)
+tar:
+	 if [ ! -d $(SRC_NAME) ] ; then \
+		tar xf $(SRC_NAME).tar.gz ; \
+	 fi ;
 clean:
-	$(MAKE) -C $(SRC_NAME) clean
+	$(MAKE) -f Makefile.linux -C $(SRC_NAME) clean
 	rm -f miniupnpd
 
 romfs:
