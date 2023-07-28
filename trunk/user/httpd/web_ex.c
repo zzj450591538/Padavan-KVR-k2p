@@ -118,7 +118,7 @@ rfctime(const time_t *timep)
 	time_zone_x_mapping();
 	setenv("TZ", nvram_safe_get("time_zone_x"), 1);
 	memcpy(&tm, localtime(timep), sizeof(struct tm));
-	strftime(s, 200, "%a, %d %b %Y %H:%M:%S %z", &tm);
+	strftime(s, 200, "%Y年-%m月-%d日 %H:%M:%S %z", &tm);
 	return s;
 }
 
