@@ -9,9 +9,9 @@ romfs:
 	$(ROMFSINST) /sbin/dev_init.sh
 	$(ROMFSINST) /sbin/reset_ss.sh
 	$(ROMFSINST) /sbin/mtd_storage.sh
-	$(ROMFSINST) /sbin/wgetcurl.sh
-	$(ROMFSINST) /sbin/check_disk_size
-	$(ROMFSINST) /sbin/wx_send.sh
+	$(ROMFSINST) -p +x $(THISDIR)/wgetcurl.sh /sbin/wgetcurl.sh
+	$(ROMFSINST) -p +x $(THISDIR)/check_disk_size /sbin/check_disk_size
+	$(ROMFSINST) -p +x $(THISDIR)/wx_send.sh /sbin/wx_send.sh
 	$(ROMFSINST) -p +x $(THISDIR)/copyscripts.sh /usr/bin/copyscripts.sh
 	$(ROMFSINST) -p +x $(THISDIR)/autostart.sh /usr/bin/autostart.sh
 ifeq ($(STORAGE_ENABLED),y)
