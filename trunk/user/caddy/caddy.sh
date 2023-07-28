@@ -9,17 +9,24 @@ http_username=`nvram get http_username`
 caddyf_wan_port=`nvram get caddyf_wan_port`
 caddyw_wan_port=`nvram get caddyw_wan_port`
 caddy_wip6=`nvram get caddy_wip6`
-
+caddybin="/tmp/caddy/caddy_filebrowser"
 caddy_start () 
 {
 	if [ "$caddy_enable" = "1" ] ;then
 		mkdir -p $caddy_dir/caddy
-		caddybin="/usr/bin/caddy_filebrowser"
 		if [ ! -f "$caddybin" ]; then
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/caddy/caddy_filebrowser
+				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser
 				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
+					logger -t "caddy" "caddy_filebrowser二进制文件下载失败！"
+                                     wgetcurl.sh "$caddy_dir/caddy/caddy_filebrowser" "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
+				else
+					logger -t "caddy" "caddy_filebrowser二进制文件下载成功"
+					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
+				fi
+                                 if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
+                                     wgetcurl.sh "$caddy_dir/caddy/caddy_filebrowser" "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
 					nvram set caddy_enable=0
 					caddy_close
 				else
