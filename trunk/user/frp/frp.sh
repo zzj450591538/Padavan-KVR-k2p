@@ -2,12 +2,14 @@
 frpc_enable=`nvram get frpc_enable`
 frps_enable=`nvram get frps_enable`
 http_username=`nvram get http_username`
-frpc="/tmp/frpc"
-frps="/tmp/frps"
+frpc="/tmp/frp/frpc"
+frps="/tmp/frp/frps"
 [ -f /etc/storage/frpc ] && frpc="/etc/storage/frpc"
 [ -f /etc/storage/frps ] && frpc="/etc/storage/frps"
+[ ! -d /tmp/frp ] && mkdir -p /tmp/frp
 check_frp () 
 {
+        [ ! -d /tmp/frp ] && mkdir -p /tmp/frp
 	check_net
 	result_net=$?
 	if [ "$result_net" = "1" ] ;then
