@@ -51,7 +51,7 @@
 #define SERVER_PORT_SSL		443
 #define PROTOCOL		"HTTP/1.0"
 #define CACHE_AGE_VAL		(30 * (24*60*60))
-#define RFC1123FMT		"%Y年-%m月-%d日 %H:%M:%S GMT"
+#define RFC1123FMT		"%a, %d %b %Y %H:%M:%S GMT"
 #define MAX_LISTEN_BACKLOG	511
 #define MAX_CONN_ACCEPT		50
 #define MAX_CONN_TIMEOUT	30
