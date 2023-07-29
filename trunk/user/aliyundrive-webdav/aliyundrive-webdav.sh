@@ -441,13 +441,13 @@ stop_ald() {
 
 case $1 in
 start)
-	start_ald
+	start_ald &
 	;;
 stop)
-	stop_ald
+	stop_ald &
 	;;
 restart)
-	alist_restart
+	alist_restart &
 	;;
 save)
 	alist_save
