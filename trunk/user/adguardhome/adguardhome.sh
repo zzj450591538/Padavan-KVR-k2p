@@ -2,6 +2,7 @@
 adgb=`nvram get adg_enable`
 D="/etc/storage/cron/crontabs"
 F="$D/`nvram get http_username`"
+#adgip=`nvram get adg_ipaddr`
 change_dns() {
 if [ "$(nvram get adg_redirect)" = 1 ]; then
 sed -i '/no-resolv/d' /etc/storage/dnsmasq/dnsmasq.conf
@@ -63,7 +64,7 @@ adg_file="/etc/storage/adg.sh"
 if [ ! -f "$adg_file" ] || [ ! -s "$adg_file" ] ; then
   cat > "$adg_file" <<-\EEE
 bind_host: 0.0.0.0
-bind_port: 3030
+bind_port: 3000
 auth_name: adguardhome
 auth_pass: adguardhome
 language: zh-cn
@@ -189,6 +190,10 @@ sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
   sleep 10
   [ ! -z "`pidof AdGuardHome`" ] && logger -t "AdGuardHome" "启动成功"
   [ -z "`pidof AdGuardHome`" ] && logger -t "AdGuardHome" "启动失败，20秒后尝试重新启动" && sleep 20 && adg_re
+  adgip=$(cat /etc/storage/adg.sh | grep "address:" | awk -F ':' '{print $3}' | tr -d ' ' )
+  [ -z "$adgip" ] && adgip=$(cat /etc/storage/adg.sh | grep "bind_port" | awk -F ':' '{print $2}' | tr -d ' ' )
+  [ -z "$adgip" ] && adgip=3030
+  nvram set adg_ipaddr="$adgip"
 logger -t "AdGuardHome" "守护进程启动" 
 sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
