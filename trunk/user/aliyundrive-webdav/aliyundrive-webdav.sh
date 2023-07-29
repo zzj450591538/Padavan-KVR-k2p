@@ -442,7 +442,7 @@ stop_ald() {
 
 case $1 in
 start)
-	start_ald &
+	[ -z "`pidof aliyundrive-webdav.sh`" ] && start_ald &
 	;;
 stop)
 	stop_ald &
