@@ -58,7 +58,7 @@ alist_keep () {
 logger -t "AList" "守护进程启动"
 sed -Ei '/alist守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
-*/1 * * * * test -z "\`pidof alist\`"  && aliyundrive-webdav.sh restart #alist守护进程"
+*/1 * * * * test -z "\`pidof alist\`" && test -z "\`pidof aliyundrive-webdav.sh\`" && aliyundrive-webdav.sh restart #alist守护进程"
 OSC
 sed -Ei '/alist配置备份|^$/d' "$F"
 cat >> "$F" <<-OSC
