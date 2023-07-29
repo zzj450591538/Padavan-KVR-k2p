@@ -283,7 +283,7 @@ sed -Ei '/ZeroTier守护进程|^$/d' "$F"
 killall zerotier-one
 killall -9 zerotier-one
 [ -z "`pidof zerotier-one`" ] && logger -t "ZeroTier" "已关闭"
-
+killall zerotier.sh
 }
 stop_zero() {
 	del_rules
