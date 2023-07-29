@@ -139,20 +139,18 @@ fi
 
 start_adg() {
 sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
-  mkdir -p /tmp/AdGuardHome
-  mkdir -p /etc/storage/AdGuardHome
-  logger -t "【AdGuardHome】" "正在启动..."
+  logger -t "AdGuardHome" "正在启动..."
   SVC_PATH="/tmp/AdGuardHome/AdGuardHome"
 	if [ ! -s "$SVC_PATH" ] ; then
-	logger -t "【AdGuardHome】" "找不到 $SVC_PATH ，开始下载 AdGuardHome 程序"
+	logger -t "AdGuardHome" "找不到 $SVC_PATH ，开始下载 AdGuardHome 程序"
 	tag=$(curl -k --silent "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 	[ -z "$tag" ] && tag="$( curl -k -L --connect-timeout 20 --silent https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 	[ -z "$tag" ] && tag="$( curl -k --connect-timeout 20 --silent https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 	[ -z "$tag" ] && tag="$( curl -k --connect-timeout 20 -s https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 		if [ ! -z "$tag" ] ; then
 			logger -t "AdGuardHome" "自动下载最新版本 $tag,下载较慢，耐心等待"
-			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
-			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp
+			curl -L -k -S -o "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp
 		else
 			static_adguard="https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/v0.107.35/AdGuardHome_linux_mipsle_softfloat.tar.gz"
 			logger -t "AdGuardHome" "获取最新版本失败,下载$static_adguard"
@@ -164,8 +162,8 @@ sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 			logger -t "AdGuardHome" "AdGuardHome下载失败,重新下载"
                 if [ ! -z "$tag" ] ; then
 			logger -t "AdGuardHome" "下载最新版本 $tag"
-			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
-			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp
+			curl -L -k -S -o "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp
 		else
 			static_adguard="https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/v0.107.35/AdGuardHome_linux_mipsle_softfloat.tar.gz"
 			logger -t "AdGuardHome" "下载AdGuardHome_v0.107.35"
