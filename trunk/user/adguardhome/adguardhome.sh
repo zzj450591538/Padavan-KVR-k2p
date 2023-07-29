@@ -114,8 +114,8 @@ filters:
   name: AdAway
   id: 2
 - enabled: true
-  url: https://anti-ad.net/easylist.txt
-  name: anti-AD
+  url: https://www.malwaredomainlist.com/hostslist/hosts.txt
+  name: MalwareDomainList.com Hosts List
   id: 3
 user_rules: []
 dhcp:
@@ -127,7 +127,7 @@ dhcp:
   range_end: ""
   lease_duration: 86400
   icmp_timeout_msec: 1000
-clients: []
+
 log_file: ""
 verbose: false
 schema_version: 3
