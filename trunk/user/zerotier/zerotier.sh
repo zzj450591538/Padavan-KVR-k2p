@@ -356,7 +356,7 @@ remove_moon(){
 
 case $1 in
 start)
-	[ -z "`pidof zerotier.sh`" ] && start_zero &
+	start_zero &
 	;;
 stop)
 	stop_zero &
