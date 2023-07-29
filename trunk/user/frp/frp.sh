@@ -15,11 +15,13 @@ check_frp ()
 	check_net
 	result_net=$?
 	if [ "$result_net" = "1" ] ;then
+ logger -t "frp" "正在启动frp"
 		if [ -z "`pidof frpc`" ] && [ "$frpc_enable" = "1" ];then
   sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
   frpcver="`$frpc --version`"
   frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frpc ] ;then
+  logger -t "frp" "未找到$frpc ,开始下载frpc_$frp_ver "
   curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
@@ -28,6 +30,7 @@ check_frp ()
   [ -z "$frpcver" ] && rm -rf $frpc
   fi
   if [ ! -f $frpc ] ;then
+  logger -t "frp" "下载失败，重新下载"
   curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
@@ -35,7 +38,7 @@ check_frp ()
   chmod 777 "$frpc"
   [ -z "$frpcver" ] && rm -rf $frpc
   fi
-  [ ! -f $frpc ] && check_dl
+  [ ! -f $frpc ] && logger -t "frp" "反复下载失败，20秒后重试" && sleep 20 && check_dl
 			frp_start
 		fi
 		if [ -z "`pidof frps`" ] && [ "$frps_enable" = "1" ];then
@@ -43,6 +46,7 @@ check_frp ()
   frpsver="`$frps --version`"
    frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frps ] ;then
+  logger -t "frp" "未找到$frps ,开始下载frps_$frp_ver "
   curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
@@ -51,6 +55,7 @@ check_frp ()
    [ -z "$frpsver" ] && rm -rf $frps
   fi
   if [ ! -f $frps ] ;then
+  logger -t "frp" "下载失败，重新下载"
   curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
@@ -58,7 +63,7 @@ check_frp ()
   chmod 777 "$frps"
   [ -z "$frpsver" ] && rm -rf $frps
   fi
-  [ ! -f $frps ] && check_dl
+  [ ! -f $frps ] && logger -t "frp" "反复下载失败，20秒后重试" && sleep 20 && check_dl
 			frp_start
 		fi
 	fi
@@ -97,6 +102,7 @@ fi
 */1 * * * * test -z "\`pidof frps\`" && /usr/bin/frp.sh C >/dev/null 2>&1
 EOF
 fi
+sleep 10
 	[ ! -z "`pidof frpc`" ] && logger -t "frp" "frpc启动成功"
 	[ ! -z "`pidof frps`" ] && logger -t "frp" "frps启动成功"
 }
