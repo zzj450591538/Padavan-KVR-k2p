@@ -204,12 +204,11 @@ killall AdGuardHome
 del_dns
 clear_iptable
 [ -z "`pidof AdGuardHome`" ] &&logger -t "【AdGuardHome】" "关闭AdGuardHome"
-killall adguardhome.sh
 }
 
 case $1 in
 start)
-  start_adg &
+  [ -z "`pidof adguardhome.sh`" ] && start_adg &
   ;;
 stop)
   stop_adg &
