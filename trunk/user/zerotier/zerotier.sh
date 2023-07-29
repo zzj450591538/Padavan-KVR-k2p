@@ -22,7 +22,7 @@ zerotier_keep  () {
 logger -t "ZeroTier" "守护进程启动"
 sed -Ei '/ZeroTier守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
-*/1 * * * * test -z "\`pidof zerotier-one\`"  && /etc/storage/zerotier.sh restart #ZeroTier守护进程
+*/1 * * * * test -z "\`pidof zerotier-one\`" && /etc/storage/zerotier.sh restart #ZeroTier守护进程
 OSC
 zero_ping &
 }
@@ -68,6 +68,7 @@ zero_dl() {
 start_zero
 }
 start_zero() {
+sed -Ei '/ZeroTier守护进程|^$/d' "$F"
 zero_enable=`nvram get zerotier_enable`
 if [ "$zero_enable" = "1" ] ; then
 logger -t "zerotier" "正在启动zerotier"
