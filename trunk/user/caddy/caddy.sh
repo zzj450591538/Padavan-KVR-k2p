@@ -74,12 +74,11 @@ caddy_close ()
 		killall -9 caddy_filebrowser
 		[ -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "已关闭文件管理服务."
 	fi
-killall caddy.sh
 }
 
 case $1 in
 start)
-caddy_start &
+[ -z "`pidof caddy.sh`" ] && caddy_start &
 ;;
 stop)
 caddy_close &
