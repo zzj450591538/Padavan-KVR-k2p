@@ -208,10 +208,10 @@ clear_iptable
 
 case $1 in
 start)
-  start_adg
+  start_adg &
   ;;
 stop)
-  stop_adg
+  stop_adg &
   ;;
 *)
   echo "check"
