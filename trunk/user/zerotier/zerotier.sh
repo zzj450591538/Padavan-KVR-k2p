@@ -12,7 +12,7 @@ zerotier_restart () {
 if [ -z "`pidof zerotier-one`" ] ; then
     logger -t "ZeroTier" "重新启动"
     stop_zero
-    zerotier_start
+    start_zero
 fi
 }
 zerotier_keep  () {
