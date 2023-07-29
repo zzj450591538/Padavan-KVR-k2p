@@ -1,5 +1,7 @@
 #!/bin/sh
 adgb=`nvram get adg_enable`
+D="/etc/storage/cron/crontabs"
+F="$D/`nvram get http_username`"
 change_dns() {
 if [ "$(nvram get adg_redirect)" = 1 ]; then
 sed -i '/no-resolv/d' /etc/storage/dnsmasq/dnsmasq.conf
@@ -136,6 +138,7 @@ fi
 }
 
 start_adg() {
+sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
   mkdir -p /tmp/AdGuardHome
   mkdir -p /etc/storage/AdGuardHome
   logger -t "【AdGuardHome】" "正在启动..."
