@@ -241,6 +241,7 @@ echo "${config}" >${Alistjson}
    [ -z "$alist_ver" ] &&  logger -t "AList" "程序不完整，重新下载..." && rm -rf "$alist" && sleep 10 && alist_down
    [ ! -z "$alist_ver" ] && logger -t "AList" "当前$alist 版本$alist_ver,准备启动"
    if [ ! -f "/tmp/alist/data/data.db" ] ; then
+    [ ! -d /tmp/alist/data ] && mkdir -p /tmp/alist/data
     "$alist" --data /tmp/alist/data admin >/tmp/alist/data/admin.account 2>&1
     user=$(cat /tmp/alist/data/admin.account | grep -E "^username" | awk '{print $2}')
     pass=$(cat /tmp/alist/data/admin.account | grep -E "^password" | awk '{print $2}')
@@ -405,6 +406,7 @@ echo "${config}" >${Alistjson}
    chmod 777 "$alist"
    [ ! -d /tmp/alist/data ] && mkdir -p /tmp/alist/data
  if [ ! -f "$upanPath/alist/data/data.db" ] ; then
+    [ ! -d /tmp/alist/data ] && mkdir -p /tmp/alist/data
     "$alist" --data /tmp/alist/data admin >/tmp/alist/data/admin.account 2>&1
     user=$(cat /tmp/alist/data/admin.account | grep -E "^username" | awk '{print $2}')
     pass=$(cat /tmp/alist/data/admin.account | grep -E "^password" | awk '{print $2}')
