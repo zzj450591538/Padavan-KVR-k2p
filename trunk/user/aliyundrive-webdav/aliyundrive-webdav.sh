@@ -10,7 +10,8 @@ F="$D/`nvram get http_username`"
 Alistjson="/tmp/alist/data/config.json"
 
 alist_restart () {
-    
+    alenb=`nvram get aliyundrive_enable`
+    [ "$alenb" != "1" ] && stop_ald && exit 0
     logger -t "AList" "重新启动"
     kill_ald
    start_ald
