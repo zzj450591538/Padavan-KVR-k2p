@@ -89,8 +89,6 @@ frp_start ()
 {
 frpc_tag="`$frpc --version`"
 frps_tag="`$frps --version`"
-[ "$frpc_enable" = "1" ] && [ ! -z "$frpc_enable" ] && rm -rf $frpc && check_frp
-[ "$frps_enable" = "1" ] && [ ! -z "$frps_enable" ] && rm -rf $frps && check_frp
 	/etc/storage/frp_script.sh
  if [ "$frpc_enable" = "1" ];then
 	sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
