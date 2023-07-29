@@ -435,6 +435,7 @@ kill_ald() {
 }
 stop_ald() {
 	kill_ald
+ killall aliyundrive-webdav.sh
 	}
 
 
