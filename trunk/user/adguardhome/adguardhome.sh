@@ -209,12 +209,12 @@ exit 0
 
 case $1 in
 start)
-  [ -z "`pidof adguardhome.sh`" ] && start_adg &
+  start_adg &
   ;;
 stop)
-  stop_adg 
+  stop_adg &
   ;;
 *)
-  start_adg
+  start_adg &
   ;;
 esac
