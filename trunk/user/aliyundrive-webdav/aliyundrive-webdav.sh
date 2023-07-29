@@ -436,6 +436,8 @@ kill_ald() {
 }
 stop_ald() {
 sed -Ei '/alist守护进程|^$/d' "$F"
+sed -Ei '/alist配置备份|^$/d' "$F"
+alist_save
 	kill_ald
 	}
 
