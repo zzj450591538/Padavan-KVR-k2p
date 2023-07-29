@@ -8,8 +8,10 @@ config_path="/etc/storage/zerotier-one"
 PLANET="/etc/storage/zerotier-one/planet"
 D="/etc/storage/cron/crontabs"
 F="$D/`nvram get http_username`"
+zerenb=`nvram get zerotier_enable`
 zerotier_restart () {
-if [ -z "`pidof zerotier-one`" ] ; then
+[ "$zerenb" != "1" ] && stop_zero
+if [ -z "`pidof zerotier-one`" ] && [ "$zerenb" = "1" ] ; then
     logger -t "ZeroTier" "重新启动"
     stop_zero
     start_zero
