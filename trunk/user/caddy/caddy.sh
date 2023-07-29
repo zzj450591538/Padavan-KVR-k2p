@@ -78,7 +78,7 @@ caddy_close ()
 
 case $1 in
 start)
-[ -z "`pidof caddy.sh`" ] && caddy_start &
+caddy_start &
 ;;
 stop)
 caddy_close &
