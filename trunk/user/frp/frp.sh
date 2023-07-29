@@ -122,7 +122,7 @@ frp_close ()
 
 case $1 in
 start)
-	frp_start &
+	check_frp &
 	;;
 stop)
 	frp_close &
