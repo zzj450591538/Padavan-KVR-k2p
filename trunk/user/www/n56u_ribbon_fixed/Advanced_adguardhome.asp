@@ -172,7 +172,7 @@ function done_validating(action){
 										<tr>
 											<th>WEB管理地址:</th>
 											<td>
-											<a href="http://<% nvram_get_x("", "adg_ipaddr"); %>">http://<% nvram_get_x("", "adg_ipaddr"); %></a>
+											<a href="<% nvram_get_x("", "adg_ipaddr"); %>"><% nvram_get_x("", "adg_ipaddr"); %></a>
 											</td>
 										</tr>
 										
