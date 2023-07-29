@@ -193,7 +193,8 @@ sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
   adgip=$(cat /etc/storage/adg.sh | grep "address:" | awk -F ':' '{print $3}' | tr -d ' ' )
   [ -z "$adgip" ] && adgip=$(cat /etc/storage/adg.sh | grep "bind_port" | awk -F ':' '{print $2}' | tr -d ' ' )
   [ -z "$adgip" ] && adgip=3030
-  nvram set adg_ipaddr="$adgip"
+  lanip=`nvram get lan_ipaddr`
+  nvram set adg_ipaddr="http://${lanip}:${adgip}"
 logger -t "AdGuardHome" "守护进程启动" 
 sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
