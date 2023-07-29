@@ -25,14 +25,19 @@ caddy_start ()
 					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
 				fi
                                  if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
-                                     wgetcurl.sh "$caddy_dir/caddy/caddy_filebrowser" "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
+					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，重新下载！"
+                                    curl -L -k -S -o "$caddy_dir/caddy/caddy_filebrowser" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
 					nvram set caddy_enable=0
 					caddy_close
 				else
 					logger -t "caddy" "caddy_filebrowser二进制文件下载成功"
 					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
 				fi
+                                 if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
+				 nvram set caddy_enable=0
+                                 logger -t "caddy" "重复下载失败，可能是地址失效或者网络异常！程序退出"
+                                  caddy_close
+				  fi
 			fi
 		fi
 		/etc/storage/caddy_script.sh
