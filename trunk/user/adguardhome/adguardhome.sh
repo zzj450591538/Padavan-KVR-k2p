@@ -1,5 +1,5 @@
 #!/bin/sh
-
+adgb=`nvram get adg_enable`
 change_dns() {
 if [ "$(nvram get adg_redirect)" = 1 ]; then
 sed -i '/no-resolv/d' /etc/storage/dnsmasq/dnsmasq.conf
@@ -166,12 +166,14 @@ start_adg() {
                 fi
      fi
               chmod 777 /tmp/AdGuardHome/AdGuardHome
+	      adgver=$(/tmp/AdGuardHome/AdGuardHome --version | awk '{print $4}')
+       [ -z "$adgver" ] && logger -t "【AdGuardHome】" "程序不完整，重新下载" && rm -rf /tmp/AdGuardHome && adg_re
   adgenable=$(nvram get adg_enable)
-  if [ "$adgenable" = "1" ] ;then
+  if [ "$adgb" = "1" ] ;then
   getconfig
   change_dns
   set_iptable
-  logger -t "【AdGuardHome】" "运行AdGuardHome"
+  logger -t "【AdGuardHome】" "运行AdGuardHome_$adgver"
   eval "/tmp/AdGuardHome/AdGuardHome -c $adg_file -w /tmp/AdGuardHome -v" &
   sleep 10
   [ ! -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "启动成功"
@@ -191,6 +193,7 @@ adg_re(){
 	 sleep 20
 	start_adg
 	fi
+ [ "$adgb" != "1" ] && stop_adg
 	exit 0
 }
 
