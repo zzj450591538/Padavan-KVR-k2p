@@ -88,15 +88,16 @@ frp_close ()
 		[ -z "`pidof frps`" ] && logger -t "frp" "已停止 frps"
 	    fi
 	fi
+ killall frp.sh
 }
 
 
 case $1 in
 start)
-	frp_start
+	frp_start &
 	;;
 stop)
-	frp_close
+	frp_close &
 	;;
 C)
 	check_frp
