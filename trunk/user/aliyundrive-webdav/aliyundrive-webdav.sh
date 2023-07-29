@@ -441,7 +441,7 @@ stop_ald() {
 
 case $1 in
 start)
-	[ -z "`pidof aliyundrive-webdav.sh`" ] && start_ald &
+       start_ald &
 	;;
 stop)
 	stop_ald &
@@ -462,7 +462,6 @@ admin)
     [ -n "$user" ] && logger -t "alist" "用户名: $user  密码: $pass"
 	;;
 *)
-	echo "check"
-	#exit 0
+	alist_restart &
 	;;
 esac
