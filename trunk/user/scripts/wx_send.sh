@@ -1,15 +1,15 @@
 #!/bin/bash
 #copyright by hiboy
 
-wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk '{print $2}')
-wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk '{print $2}')
-wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk '{print $2}')
-wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk '{print $2}')
-wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk '{print $2}')
-wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk '{print $2}')
-wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk '{print $2}')
-wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk '{print $2}')
-wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk '{print $2}')
+wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk -F '=' '{print $2}' | tr -d " " )
+wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk -F '=' '{print $2}' | tr -d " " )
 [ -z "$wxtime" ] && wxtime=60
 
 D="/etc/storage/cron/crontabs"
@@ -79,15 +79,15 @@ wxsend_start () {
          cat > "/etc/storage/wxsendfile.sh" <<-\EEE
 #!/bin/bash
 
-wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk '{print $2}')
-wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk '{print $2}')
-wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk '{print $2}')
-wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk '{print $2}')
-wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk '{print $2}')
-wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk '{print $2}')
-wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk '{print $2}')
-wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk '{print $2}')
-wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk '{print $2}')
+wxsend_appid=$(cat /etc/storage/post_wan_script.sh | grep "wx_appid=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_appsecret=$(cat /etc/storage/post_wan_script.sh | grep "wx_appsecret=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_touser=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_touser=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_template_id=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_template_id=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_1=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_1=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_2=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_2=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_3=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_3=" | awk -F '=' '{print $2}' | tr -d " " )
+wxsend_notify_4=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_notify_4=" | awk -F '=' '{print $2}' | tr -d " " )
+wxtime=$(cat /etc/storage/post_wan_script.sh | grep "wxsend_time=" | awk -F '=' '{print $2}' | tr -d " " )
 [ -z "$wxtime" ] && wxtime=60
 
 mkdir -p /tmp/var
