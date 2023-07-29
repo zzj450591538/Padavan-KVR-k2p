@@ -357,13 +357,13 @@ remove_moon(){
 
 case $1 in
 start)
-	start_zero
+	start_zero &
 	;;
 stop)
-	stop_zero
+	stop_zero &
 	;;
 restart)
-	zerotier_restart
+	zerotier_restart &
 	;;
 *)
 	zerotier_restart
