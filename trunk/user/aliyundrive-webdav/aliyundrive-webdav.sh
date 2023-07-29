@@ -435,6 +435,7 @@ kill_ald() {
 	fi
 }
 stop_ald() {
+sed -Ei '/alist守护进程|^$/d' "$F"
 	kill_ald
 	}
 
