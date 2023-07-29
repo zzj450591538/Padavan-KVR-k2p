@@ -18,7 +18,6 @@ check_frp ()
  logger -t "frp" "正在启动frp"
 		if [ -z "`pidof frpc`" ] && [ "$frpc_enable" = "1" ];then
   sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
-  frpcver="`$frpc --version`"
   frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frpc ] ;then
   logger -t "frp" "未找到$frpc ,开始下载frpc_$frp_ver "
@@ -27,6 +26,7 @@ check_frp ()
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
   chmod 777 "$frpc"
+  frpcver="`$frpc --version`"
   [ -z "$frpcver" ] && rm -rf $frpc
   fi
   if [ ! -f $frpc ] ;then
@@ -36,6 +36,7 @@ check_frp ()
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
   chmod 777 "$frpc"
+  frpcver="`$frpc --version`"
   [ -z "$frpcver" ] && rm -rf $frpc
   fi
   [ ! -f $frpc ] && logger -t "frp" "反复下载失败，20秒后重试" && sleep 20 && check_dl
@@ -43,7 +44,6 @@ check_frp ()
 		fi
 		if [ -z "`pidof frps`" ] && [ "$frps_enable" = "1" ];then
   sed -i '/frps/d' /etc/storage/cron/crontabs/$http_username
-  frpsver="`$frps --version`"
    frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frps ] ;then
   logger -t "frp" "未找到$frps ,开始下载frps_$frp_ver "
@@ -52,6 +52,7 @@ check_frp ()
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
   chmod 777 "$frps"
+   frpsver="`$frps --version`"
    [ -z "$frpsver" ] && rm -rf $frps
   fi
   if [ ! -f $frps ] ;then
@@ -61,6 +62,7 @@ check_frp ()
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
   chmod 777 "$frps"
+   frpsver="`$frps --version`"
   [ -z "$frpsver" ] && rm -rf $frps
   fi
   [ ! -f $frps ] && logger -t "frp" "反复下载失败，20秒后重试" && sleep 20 && check_dl
@@ -103,8 +105,8 @@ fi
 EOF
 fi
 sleep 10
-	[ ! -z "`pidof frpc`" ] && logger -t "frp" "frpc启动成功"
-	[ ! -z "`pidof frps`" ] && logger -t "frp" "frps启动成功"
+	[ ! -z "`pidof frpc`" ] && logger -t "frp" "frpc_$frpc_tag启动成功"
+	[ ! -z "`pidof frps`" ] && logger -t "frp" "frps_$frpc_tag启动成功"
 }
 
 frp_close () 
