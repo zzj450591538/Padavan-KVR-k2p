@@ -42,7 +42,7 @@ upanPath="`df -m | grep /dev/mmcb | grep -E "$(echo $(/usr/bin/find /dev/ -name 
 		[ "$data1"x = "$data2"x ] && [ ! -z "$upanPath" ] && [ "$data1"x = "$data2"x ] && cp -rf /tmp/alist_backup.tgz "$upanPath/alist/alist_backup.tgz"
 		
 		if [ "$etcsize" -gt "$datasize1" ] ;then	
-		 [ "$data1"x = "$data2"x ] && cp -rf /tmp/alist_backup.tgz /etc/storage/alist_backup.tgz && rm -rf /etc/storage/alist/alist_backup.tgz && mv -f /tmp/alist_backup.tgz /etc/storage/alist/alist_backup.tgz && [ -s /etc/storage/alist/alist_backup.tgz ] && logger -t "【AList】" "/etc/storage/alist/alist_backup.tgz配置文件包$datasize0 k 备份完成，当前/etc/storage可用容量 $etcsize k" 
+		 [ "$data1"x = "$data2"x ] && cp -rf /tmp/alist_backup.tgz /etc/storage/alist_backup.tgz && rm -rf /etc/storage/alist/alist_backup.tgz && mv -f /tmp/alist_backup.tgz /etc/storage/alist/alist_backup.tgz && [ -s /etc/storage/alist/alist_backup.tgz ] && logger -t "AList" "/etc/storage/alist/alist_backup.tgz配置文件包$datasize0 k 备份完成，当前/etc/storage可用容量 $etcsize k" 
 		else
 		logger -t "AList" "当前alist备份配置文件包$datasize1 k 超过了/etc/storage $etcsize k 可用容量，无法保存最新配置到闪存！可尝试在alist主页进行备份，然后恢复备份来减少配置文件的大小"
 	        fi
@@ -138,7 +138,7 @@ config='{
     "user": "",
     "password": "",
     "name": "",
-    "db_file": '${db_file}',
+    "db_file": "'${db_file}'",
     "table_prefix": "x_",
     "ssl_mode": ""
   },
@@ -300,7 +300,7 @@ config='{
     "user": "",
     "password": "",
     "name": "",
-    "db_file": '${db_file}',
+    "db_file": "'${db_file}'",
     "table_prefix": "x_",
     "ssl_mode": ""
   },
