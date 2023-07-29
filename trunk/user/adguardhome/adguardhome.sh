@@ -11,7 +11,7 @@ no-resolv
 server=127.0.0.1#5335
 EOF
 /sbin/restart_dhcpd
-logger -t "【AdGuardHome】" "添加DNS转发到5335端口"
+logger -t "AdGuardHome" "添加DNS转发到5335端口"
 fi
 }
 
@@ -36,7 +36,7 @@ set_iptable() {
     ip6tables -t nat -A PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
     ip6tables -t nat -A PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
   done
-    logger -t "【AdGuardHome】" "重定向53端口"
+    logger -t "AdGuardHome" "重定向53端口"
     fi
 }
 
@@ -150,38 +150,48 @@ sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 	[ -z "$tag" ] && tag="$( curl -k --connect-timeout 20 --silent https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 	[ -z "$tag" ] && tag="$( curl -k --connect-timeout 20 -s https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 		if [ ! -z "$tag" ] ; then
-			logger -t "【AdGuardHome】" "自动下载最新版本 $tag,下载较慢，耐心等待"
-			wgetcurl.sh "/tmp/AdGuardHome/AdGuardHome.tar.gz" "https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			logger -t "AdGuardHome" "自动下载最新版本 $tag,下载较慢，耐心等待"
+			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
 			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp
 		else
 			static_adguard="https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/v0.107.35/AdGuardHome_linux_mipsle_softfloat.tar.gz"
-			logger -t "【AdGuardHome】" "获取最新版本失败,下载$static_adguard"
-			curl -L -k -S -o  "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "$static_adguard"
+			logger -t "AdGuardHome" "获取最新版本失败,下载$static_adguard"
+			curl -L -k -S -o "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "$static_adguard"
 			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp ; cd /tmp/AdGuardHome
 		fi
 		 cd /tmp/AdGuardHome ; rm -f ./AdGuardHome.tar.gz ./LICENSE.txt./README.md ./CHANGELOG.md ./AdGuardHome.sig
 		if [ ! -s "$SVC_PATH" ] && [ -d "/tmp/AdGuardHome" ] ; then
-			logger -t "【AdGuardHome】" "AdGuardHome下载失败,开始下载备用程序"
-			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/padavan-KVR@master/trunk/user/adguardhome/AdGuardHome"
+			logger -t "AdGuardHome" "AdGuardHome下载失败,重新下载"
+                if [ ! -z "$tag" ] ; then
+			logger -t "AdGuardHome" "下载最新版本 $tag"
+			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp
+		else
+			static_adguard="https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/v0.107.35/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			logger -t "AdGuardHome" "下载AdGuardHome_v0.107.35"
+			curl -L -k -S -o "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "$static_adguard"
+			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp ; cd /tmp/AdGuardHome
+		fi
+		 cd /tmp/AdGuardHome ; rm -f ./AdGuardHome.tar.gz ./LICENSE.txt./README.md ./CHANGELOG.md ./AdGuardHome.sig
 	        fi
                if [ -f "/tmp/AdGuardHome/AdGuardHome" ]; then
-                logger -t "【AdGuardHome】" "AdGuardHome下载成功,安装在内存，将会占用部分内存，请注意内存使用容量！"
+                logger -t "AdGuardHome" "AdGuardHome下载成功,安装在内存，将会占用部分内存，请注意内存使用容量！"
                 fi
      fi
               chmod 777 /tmp/AdGuardHome/AdGuardHome
 	      adgver=$(/tmp/AdGuardHome/AdGuardHome --version | awk '{print $4}')
-       [ -z "$adgver" ] && logger -t "【AdGuardHome】" "程序不完整，重新下载" && rm -rf /tmp/AdGuardHome && adg_re
+       [ -z "$adgver" ] && logger -t "AdGuardHome" "程序不完整，重新下载" && rm -rf /tmp/AdGuardHome && adg_re
   adgenable=$(nvram get adg_enable)
   if [ "$adgb" = "1" ] ;then
   getconfig
   change_dns
   set_iptable
-  logger -t "【AdGuardHome】" "运行AdGuardHome_$adgver"
+  logger -t "AdGuardHome" "运行AdGuardHome_$adgver"
   eval "/tmp/AdGuardHome/AdGuardHome -c $adg_file -w /tmp/AdGuardHome -v" &
   sleep 10
-  [ ! -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "启动成功"
-  [ -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "启动失败，20秒后尝试重新启动" && sleep 20 && adg_re
-logger -t "【AdGuardHome】" "守护进程启动" 
+  [ ! -z "`pidof AdGuardHome`" ] && logger -t "AdGuardHome" "启动成功"
+  [ -z "`pidof AdGuardHome`" ] && logger -t "AdGuardHome" "启动失败，20秒后尝试重新启动" && sleep 20 && adg_re
+logger -t "AdGuardHome" "守护进程启动" 
 sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
 */1 * * * * test -z \"\$(pidof AdGuardHome\" && [ \"\$(nvram get adg_enable)\" = "1" ] &&  adguardhome.sh start #AdGuardHome守护进程"
@@ -207,7 +217,7 @@ killall -9 AdGuardHome
 killall AdGuardHome
 del_dns
 clear_iptable
-[ -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "关闭AdGuardHome"
+[ -z "`pidof AdGuardHome`" ] && logger -t "AdGuardHome" "关闭AdGuardHome"
 }
 
 case $1 in
