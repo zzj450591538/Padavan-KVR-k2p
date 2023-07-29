@@ -93,7 +93,7 @@ frp_close ()
 
 case $1 in
 start)
-	[ -z "`pidof frp.sh`" ] && frp_start &
+	frp_start &
 	;;
 stop)
 	frp_close &
