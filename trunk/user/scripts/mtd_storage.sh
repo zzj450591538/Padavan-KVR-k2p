@@ -295,26 +295,26 @@ sync && echo 3 > /proc/sys/vm/drop_caches
 #************微信推送*******************
 #自建微信推送申请地址：https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
 #教程：https://opt.cn2qq.com/opt-file/测试号配置.pdf
-#1.下方填写申请的appid=（= 中间必须要留有空格）例如=  wx9137fdf261df9f7d
+#1.下方填写申请的appid= 例如= wx9137fdf261df9f7d
 #wx_appid= 
-#2.下方填写申请的appsecret=（= 中间必须要留有空格）例如=  b2a0256470a6cf7e3f3a9e63c8197560
+#2.下方填写申请的appsecret= 例如= b2a0256470a6cf7e3f3a9e63c8197560
 #wx_appsecret= 
-#3.下方填写申请的微信号=（= 中间必须要留有空格）例如=  ok5hz6FNykEAX9X7VnKuFd7YCPqg
+#3.下方填写申请的微信号= 例如= ok5hz6FNykEAX9X7VnKuFd7YCPqg
 #wxsend_touser= 
-#4.下方填写申请的模板ID=（= 中间必须要留有空格）例如=  pHc01IZWHyM3NOC-8vQ26XAB-mApPLrWVZI1A29iSj0
+#4.下方填写申请的模板ID= 例如= pHc01IZWHyM3NOC-8vQ26XAB-mApPLrWVZI1A29iSj0
 #wxsend_template_id= 
 #*****以下功能推送脚本路径：/etc/storage/wxsendfile.sh **********
-#1.下方填= 1启用WAN口IP变动推送 （= 中间必须要留有空格）例如= 1
+#1.下方填= 1启用WAN口IP变动推送 例如= 1
 #wxsend_notify_1= 1 
-#2.下方填= 1启用设备接入推送（= 中间必须要留有空格）例如= 1
+#2.下方填= 1启用设备接入推送 例如= 1
 #wxsend_notify_2= 1
-#3.下方填= 1启用设备上、下线推送（= 中间必须要留有空格）例如= 1
+#3.下方填= 1启用设备上、下线推送 例如= 1
 #wxsend_notify_3= 1
-#4.下方填= 1启用自定义内容推送（= 中间必须要留有空格）例如= 1
+#4.下方填= 1启用自定义内容推送 例如= 1
 #wxsend_notify_4= 1
 #4.修改微信推送脚本的路径/etc/storage/wxsendfile.sh
 #4.自定义教程：自建微信推送脚本ipv6进程守护循环检测https://www.right.com.cn/forum/thread-8282061-1-1.html
-#5.下方填= 循环检测的时间，每隔多少秒检测一次 秒为单位（= 中间必须要留有空格）例如三分钟= 180
+#5.下方填= 循环检测的时间，每隔多少秒检测一次，秒为单位，例如三分钟= 180
 #wxsend_time= 60
 #6.下方代码去掉前面的#,表示启用微信推送开机自启
 #wx_send.sh start &
