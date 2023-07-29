@@ -20,7 +20,7 @@ check_frp ()
   frpcver="`$frpc --version`"
   frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frpc ] ;then
-  wgetcurl.sh "/tmp/var/frp_linux_mipsle.tar.gz" "https://github.com/fatedier/frp/releases/download/v" "$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
@@ -28,7 +28,7 @@ check_frp ()
   [ -z "$frpcver" ] && rm -rf $frpc
   fi
   if [ ! -f $frpc ] ;then
-  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v" "$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frpc" "$frpc"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
@@ -43,7 +43,7 @@ check_frp ()
   frpsver="`$frps --version`"
    frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frps ] ;then
-  wgetcurl.sh "/tmp/var/frp_linux_mipsle.tar.gz" "https://github.com/fatedier/frp/releases/download/v" "$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/fatedier/frp/releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
@@ -51,7 +51,7 @@ check_frp ()
    [ -z "$frpsver" ] && rm -rf $frps
   fi
   if [ ! -f $frps ] ;then
-  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v" "$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
+  curl -L -k -S -o "/tmp/var/frp_linux_mipsle.tar.gz" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/fatedier/frp@releases/download/v""$frp_ver""/frp_""$frp_ver""_linux_mipsle.tar.gz"
   tar -xz -C  /tmp -f  /tmp/var/frp_linux_mipsle.tar.gz
   mv -f "/tmp/frp_""$frp_ver""_linux_mipsle/frps" "$frps"
   rm -rf "/tmp/frp_""$frp_ver""_linux_mipsle"
