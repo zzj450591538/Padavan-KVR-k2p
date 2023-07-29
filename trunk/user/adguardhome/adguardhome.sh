@@ -140,7 +140,6 @@ start_adg() {
   mkdir -p /etc/storage/AdGuardHome
   logger -t "【AdGuardHome】" "正在启动..."
   SVC_PATH="/tmp/AdGuardHome/AdGuardHome"
-  [ ! -d "/tmp/AdGuardHome" ] && mkdir -p /tmp/AdGuardHome/
 	if [ ! -s "$SVC_PATH" ] ; then
 	logger -t "【AdGuardHome】" "找不到 $SVC_PATH ，开始下载 AdGuardHome 程序"
 	tag=$(curl -k --silent "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -152,15 +151,15 @@ start_adg() {
 			wgetcurl.sh "/tmp/AdGuardHome/AdGuardHome.tar.gz" "https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle_softfloat.tar.gz"
 			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp
 		else
-			static_adguard="https://static.adtidy.org/adguardhome/beta/AdGuardHome_linux_mipsle_softfloat.tar.gz"
+			static_adguard="https://fastly.jsdelivr.net/gh/AdguardTeam/AdGuardHome@releases/download/v0.107.35/AdGuardHome_linux_mipsle_softfloat.tar.gz"
 			logger -t "【AdGuardHome】" "获取最新版本失败,下载$static_adguard"
-			wgetcurl.sh "/tmp/AdGuardHome/AdGuardHome.tar.gz" "$static_adguard"
-			tar -xzvf /tmp/AdGuardHome/AdGuardHome.tar.gz -C /tmp ; cd /tmp/AdGuardHome
+			curl -L -k -S -o  "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "$static_adguard"
+			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp ; cd /tmp/AdGuardHome
 		fi
 		 cd /tmp/AdGuardHome ; rm -f ./AdGuardHome.tar.gz ./LICENSE.txt./README.md ./CHANGELOG.md ./AdGuardHome.sig
 		if [ ! -s "$SVC_PATH" ] && [ -d "/tmp/AdGuardHome" ] ; then
 			logger -t "【AdGuardHome】" "AdGuardHome下载失败,开始下载备用程序"
-			wgetcurl.sh "/tmp/AdGuardHome/AdGuardHome" "https://fastly.jsdelivr.net/gh/lmq8267/rt-n56u@master/trunk/user/adguardhome/AdGuardHome"
+			curl -L -k -S -o "/tmp/AdGuardHome/AdGuardHome" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/padavan-KVR@master/trunk/user/adguardhome/AdGuardHome"
 	        fi
                if [ -f "/tmp/AdGuardHome/AdGuardHome" ]; then
                 logger -t "【AdGuardHome】" "AdGuardHome下载成功,安装在内存，将会占用部分内存，请注意内存使用容量！"
@@ -174,7 +173,7 @@ start_adg() {
   set_iptable
   logger -t "【AdGuardHome】" "运行AdGuardHome"
   eval "/tmp/AdGuardHome/AdGuardHome -c $adg_file -w /tmp/AdGuardHome -v" &
-  sleep 5
+  sleep 10
   [ ! -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "启动成功"
   [ -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "启动失败，20秒后尝试重新启动" && sleep 20 && adg_re
 logger -t "【AdGuardHome】" "守护进程启动" 
@@ -190,7 +189,6 @@ adg_re(){
         adg_enable=`nvram get adg_enable`
 	if [ -z "`pidof AdGuardHome`" ] && [ "$adg_enable" = "1" ];then
 	 sleep 20
-    rm -rf /tmp/AdGuardHome
 	start_adg
 	fi
 	exit 0
