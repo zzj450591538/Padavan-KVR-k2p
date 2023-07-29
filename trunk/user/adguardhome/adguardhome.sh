@@ -203,8 +203,7 @@ killall -9 AdGuardHome
 killall AdGuardHome
 del_dns
 clear_iptable
-[ -z "`pidof AdGuardHome`" ] &&logger -t "【AdGuardHome】" "关闭AdGuardHome"
-exit 0
+[ -z "`pidof AdGuardHome`" ] && logger -t "【AdGuardHome】" "关闭AdGuardHome"
 }
 
 case $1 in
