@@ -91,11 +91,11 @@ if [ ! -s "/etc/storage/bin/zerotier-one" ] ; then
    logger -t "【ZeroTier】" "下载失败，重新下载"
    rm -rf /tmp/var/zMD5.txt
    if [ ! -z "$tag" ] ; then
-       wgetcurl.sh "/tmp/var/zMD5.txt" "https://github.com/lmq8267/ZeroTierOne/releases/download/$tag/MD5.txt"
-      wgetcurl.sh "/tmp/var/zerotier.tar.gz" "https://github.com/lmq8267/ZeroTierOne/releases/download/$tag/zerotier.tar.gz"
+       curl -L -k -S -o "/tmp/var/zMD5.txt" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/ZeroTierOne/releases/download/$tag/MD5.txt"
+      curl -L -k -S -o "/tmp/var/zerotier.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/ZeroTierOne/releases/download/$tag/zerotier.tar.gz"
       else
-       wgetcurl.sh "/tmp/var/zMD5.txt" "https://github.com/lmq8267/ZeroTierOne/releases/download/1.10.6/MD5.txt"
-      wgetcurl.sh "/tmp/var/zerotier.tar.gz" "https://github.com/lmq8267/ZeroTierOne/releases/download/1.10.6/zerotier.tar.gz"
+       curl -L -k -S -o "/tmp/var/zMD5.txt" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/ZeroTierOne/releases/download/1.10.6/MD5.txt"
+      curl -L -k -S -o "/tmp/var/zerotier.tar.gz" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/ZeroTierOne/releases/download/1.10.6/zerotier.tar.gz"
       fi
 fi
 if [ -s "/etc/storage/zerotier-one/MD5.txt" ] && [ -s "/etc/storage/bin/zerotier-one" ] ; then
