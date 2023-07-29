@@ -16,6 +16,7 @@ check_frp ()
 	result_net=$?
 	if [ "$result_net" = "1" ] ;then
 		if [ -z "`pidof frpc`" ] && [ "$frpc_enable" = "1" ];then
+  sed -i '/frpc/d' /etc/storage/cron/crontabs/$http_username
   frpcver="`$frpc --version`"
   frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frpc ] ;then
@@ -38,6 +39,7 @@ check_frp ()
 			frp_start
 		fi
 		if [ -z "`pidof frps`" ] && [ "$frps_enable" = "1" ];then
+  sed -i '/frps/d' /etc/storage/cron/crontabs/$http_username
   frpsver="`$frps --version`"
    frp_ver=$(cat /etc/storage/frp_script.sh | grep frp_version | awk -F '=' '{print $2}' | tr -d 'v' | tr -d ' ') && [ ! -z $frp_ver ] && frp_ver="0.51.2"
   if [ ! -f $frps ] ;then
