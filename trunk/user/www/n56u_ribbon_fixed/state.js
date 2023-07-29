@@ -731,7 +731,7 @@ if (found_app_wyy()) {
 	tabMenuHash.put('20', mx2);
 }
 if (found_app_aldriver()) {
-	var mx = { "title": "<#menu5_36#>", "link": "Advanced_aliyundrive.asp", index: "22" };
+	var mx = { "title": "<#menu5_36#>", "link": "Advanced_aliyundrive.asp", index: "21" };
 	var mx2 = [{ "title": "<#menu5_36_1#>", "link": "Advanced_aliyundrive.asp" }];
 	menuL2.push(mx);
 	tabMenuHash.put('21', mx2);
