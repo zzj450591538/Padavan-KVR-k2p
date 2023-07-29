@@ -170,15 +170,15 @@ sed -Ei '/AdGuardHome守护进程|^$/d' "$F"
 			curl -L -k -S -o "/tmp/AdGuardHome.tar.gz" --connect-timeout 10 --retry 3 "$static_adguard"
 			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp ; cd /tmp/AdGuardHome
 		fi
-		 cd /tmp/AdGuardHome ; rm -f ./AdGuardHome.tar.gz ./LICENSE.txt./README.md ./CHANGELOG.md ./AdGuardHome.sig
+		 cd /tmp/AdGuardHome ; rm -f ./LICENSE.txt./README.md ./CHANGELOG.md ./AdGuardHome.sig
 	        fi
-               if [ -f "/tmp/AdGuardHome/AdGuardHome" ]; then
-                logger -t "AdGuardHome" "AdGuardHome下载成功,安装在内存，将会占用部分内存，请注意内存使用容量！"
-                fi
      fi
               chmod 777 /tmp/AdGuardHome/AdGuardHome
 	      adgver=$(/tmp/AdGuardHome/AdGuardHome --version | awk '{print $4}')
        [ -z "$adgver" ] && logger -t "AdGuardHome" "程序不完整，重新下载" && rm -rf /tmp/AdGuardHome && adg_re
+       if [ -f "/tmp/AdGuardHome/AdGuardHome" ]; then
+                logger -t "AdGuardHome" "AdGuardHome_$adgver下载成功！"
+                fi
   adgenable=$(nvram get adg_enable)
   if [ "$adgb" = "1" ] ;then
   getconfig
