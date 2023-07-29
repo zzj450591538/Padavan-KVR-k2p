@@ -67,6 +67,7 @@ cat >> "$F" <<-OSC
 OSC
 }
 start_ald() {
+sed -Ei '/alist守护进程|^$/d' "$F"
    logger -t "AList" "正在启动..."
     alienable=$(nvram get aliyundrive_enable)
    case "$alienable" in
