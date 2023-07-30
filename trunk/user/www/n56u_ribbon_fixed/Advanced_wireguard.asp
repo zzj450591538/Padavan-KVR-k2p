@@ -121,7 +121,7 @@ function done_validating(action){
 								    <a href="Advanced_aliddns.asp">ddns-go域名解析</a>
 								</li>
 								<li id="dtolink" style="display:none">
-								    <a href="Advanced_ddnsto.asp"><#menu5_34_1#></a>
+								    <a href="Advanced_ddnsto.asp">ddnsto</a>
 								</li>
 								<li id="zelink" style="display:none">
 								    <a href="Advanced_zerotier.asp"><#menu5_32_1#></a>
