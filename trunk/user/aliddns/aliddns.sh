@@ -56,10 +56,11 @@ logger -t "luckyo" "未找到$lucky ，开始下载"
 curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
 fi
 chmod 777 "$lucky"
+luckyver=$($lucky -info | grep "Version" | awk -F 'Version' '{print $2}'| tr -d 'A-Z' | tr -d 'a-z' | tr -d ":" | tr -d "," | tr -d '"')
 [[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && logger -t "lucky" "程序不完整，重新下载" && rm -rf $lucky && kill_ps
  $lucky $aliddns_ttl >/tmp/lucky/lucky.log &
 sleep 8
-[ ! -z "`pidof lucky`" ] && logger -t "lucky" "启动成功"
+[ ! -z "`pidof lucky`" ] && logger -t "lucky" "lucky_$luckyver 启动成功"
 [ -z "`pidof lucky`" ] && logger -t "lucky" "启动失败，看看哪里的问题，20秒后尝试重新启动" && kill_ps
 port=$(cat /tmp/lucky/lucky.log | grep "后台登录网址:" | awk '{print$4}' | tr -d " " | awk -F ':' '{print $3}' )
 ipaddr=`nvram get lan_ipaddr`
