@@ -1,24 +1,21 @@
 #!/bin/sh
 #copyright by hiboy
-export PATH='/etc/storage/bin:/tmp/script:/etc/storage/script:/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'
-export LD_LIBRARY_PATH=/lib:/opt/lib
 D="/etc/storage/cron/crontabs"
 F="$D/`nvram get http_username`"
 aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
-#nvramshow=`nvram showall | grep '=' | grep aliddns | awk '{print gensub(/'"'"'/,"'"'"'\"'"'"'\"'"'"'","g",$0);}'| awk '{print gensub(/=/,"='\''",1,$0)"'\'';";}'` && eval $nvramshow
 aliddns_ttl=`nvram get aliddns_ttl`
 [ -z $aliddns_ttl ] && aliddns_ttl="-l :9877 -f 600 -c /etc/storage/ddns_script.sh -skipVerify" && nvram set aliddns_ttl="$aliddns_ttl"
 ddnsgo="/tmp/ddnsgo/ddnsgo"
+[ ! -d /tmp/ddnsgo ] && mkdir -p /tmp/ddnsgo
 
 aliddns_check () {
-
-if [ "aliddns_enable" = "1" ] && [ -z "`pidof ddnsgo`" ] ; then
+if [ "$aliddns_enable" = "1" ] && [ -z "`pidof ddnsgo`" ] ; then
 	logger -t "ddns-go" "重新启动"
  aliddns_close
  aliddns_start
 fi
-if [ "aliddns_enable" = "0" ] ; then	
+if [ "$aliddns_enable" = "0" ] ; then	
 aliddns_close				
 fi
 }
@@ -46,7 +43,7 @@ sleep 5
 }
 
 aliddns_start () {
-if [ "aliddns_enable" = "0" ] ; then	
+if [ "$aliddns_enable" = "0" ] ; then	
 aliddns_close				
 fi
 initconfig
@@ -65,7 +62,7 @@ ddnsgo_ver="$($ddnsgo -v | sed -n '1p')"
 eval "$ddnsgo $aliddns_ttl" &
 sleep 8
 [ ! -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "ddnsgo_$ddnsgo_ver 启动成功"
-[ -z "`pidof ddnsgo`" ] && logger -t ""ddns-go" "ddnsgo_$ddnsgo_ver 启动失败，20秒后尝试重新启动" && kill_ps
+[ -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "ddnsgo_$ddnsgo_ver 启动失败，20秒后尝试重新启动" && kill_ps
 port=$(echo $aliddns_ttl | awk '{print $2}' | awk -F ':' {'print $2'} | tr -d " " )
 ipaddr=`nvram get lan_ipaddr`
 if [ ! -z "$port" ] ; then
@@ -83,11 +80,11 @@ cat > "/etc/storage/ddns_script.sh" <<-\EEE
 notallowwanaccess: true
 
 EEE
-	chmod 755 "$ddns_script"
+	chmod 755 /etc/storage/ddns_script.sh
 fi
 }
 
-case $ACTION in
+case $1 in
 start)
 	aliddns_start
 	;;
