@@ -430,9 +430,9 @@ struct nvram_pair router_defaults[] = {
 	{ "koolproxy_cpu", "0"},
 	{ "koolproxy_prot", "0"},
 	{ "rules_list", "0"},
-	{ "koolproxy_txt_0", "https://cdn.jsdelivr.net/gh/houzi-/CDN/koolproxy.txt"},
-	{ "daily_txt_0", "https://cdn.jsdelivr.net/gh/houzi-/CDN/daily.txt"},
-	{ "kp_dat_0", "https://cdn.jsdelivr.net/gh/houzi-/CDN/kp.dat"},
+	{ "koolproxy_txt_0", "https://fastly.jsdelivr.net/gh/houzi-/CDN/koolproxy.txt"},
+	{ "daily_txt_0", "https://fastly.jsdelivr.net/gh/houzi-/CDN/daily.txt"},
+	{ "kp_dat_0", "https://fastly.jsdelivr.net/gh/houzi-/CDN/kp.dat"},
 	{ "koolproxy_txt_1", "https://gitee.com/bkye/kp/raw/master/mrules/koolproxy.txt"},
 	{ "daily_txt_1", "https://gitee.com/bkye/kp/raw/master/mrules/daily.txt"},
 	{ "kp_dat_1", "https://dev.tencent.com/u/dtid_39de1afb676d0d78/p/kp/git/raw/master/kp.dat"},
@@ -690,10 +690,10 @@ struct nvram_pair router_defaults[] = {
 	{ "ss_enable", "0" },
 	{ "trojan_local_enable", "0" },
 	{ "trojan_local", "/tmp/trojan" },
-	{ "trojan_link", "https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/trojan" },
+	{ "trojan_link", "https://fastly.jsdelivr.net/gh/Padavan_CI/ssp/trojan" },
 	{ "v2_local_enable", "0" },
 	{ "v2_local", "/tmp/v2ray" },
-	{ "v2_link", "https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/v2ray" },
+	{ "v2_link", "https://fastly.jsdelivr.net/gh/Padavan_CI/ssp/v2ray" },
 	{ "ss_mode", "2" },
 	{ "ss_server", "127.0.0.1" },
 	{ "ss_server_port", "8989" },
@@ -806,7 +806,7 @@ struct nvram_pair router_defaults[] = {
 	/*Zerotier*/
 	{ "zerotier_enable", "0" },
 	{ "zerotier_id", "" },
-	{ "zerotier_nat", "0" },
+	{ "zerotier_nat", "1" },
 	{ "zerotier_secret", "" },
 	{ "zero_staticnum_x", "0" },
 #endif
@@ -886,7 +886,7 @@ struct nvram_pair router_defaults[] = {
 	{ "ald_root", "48" },
 	{ "ald_domain_id", "0.0.0.0" },
 	{ "ald_no_trash", "" },
-	{ "ald_read_only", "" },
+	{ "ald_read_only", "0" },
 #endif
 
 	/* DHCP server parameters */
