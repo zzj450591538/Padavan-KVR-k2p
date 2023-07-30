@@ -476,7 +476,7 @@ struct nvram_pair router_defaults[] = {
 	/* Aliddns */
 	{ "aliddns_enable", "0" },
 	{ "aliddns_interval", "600" },
-	{ "aliddns_ttl", "-l :9877 -f 600 -c /etc/storage/ddns_script.sh -skipVerify" },
+	{ "aliddns_ttl", "-c /etc/storage/lucky/lucky.conf -p 8587" },
 	{ "aliddns_ak", ""  },
 	{ "aliddns_sk", "" },
 	{ "aliddns_name", "" },
