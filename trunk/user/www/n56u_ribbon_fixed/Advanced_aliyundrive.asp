@@ -165,7 +165,20 @@ function done_validating(action){
 											</td>
 
 										</tr>
-
+<tr>
+										<th width="30%">自动更新版本</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="ald_read_only_on_of">
+														<input type="checkbox" id="ald_read_only_fake" <% nvram_match_x("", "ald_read_only", "1", "value=1 checked"); %><% nvram_match_x("", "ald_read_only", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="ald_read_only" id="ald_read_only_1" class="input" value="1" <% nvram_match_x("", "ald_read_only", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="ald_read_only" id="ald_read_only_0" class="input" value="0" <% nvram_match_x("", "ald_read_only", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>
 										<tr>
 										<th>CDN服务器</th>
 				<td>
