@@ -45,7 +45,7 @@ logger -t "自动启动" "正在启动koolproxy"
 fi
 
 if [ $(nvram get aliddns_enable) = 1 ] ; then
-logger -t "自动启动" "正在启动ddns-go"
+logger -t "自动启动" "正在启动lucky工具箱"
 /usr/bin/aliddns.sh start
 fi
 
