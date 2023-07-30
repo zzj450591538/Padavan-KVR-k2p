@@ -10,6 +10,7 @@ caddyf_wan_port=`nvram get caddyf_wan_port`
 caddyw_wan_port=`nvram get caddyw_wan_port`
 caddy_wip6=`nvram get caddy_wip6`
 caddybin="/tmp/caddy/caddy_filebrowser"
+[ -f /etc/storage/bin/caddy_filebrowser ] && caddybin="/etc/storage/bin/caddy_filebrowser"
 caddy_start () 
 {
 	if [ "$caddy_enable" = "1" ] ;then
@@ -40,6 +41,7 @@ caddy_start ()
 				  fi
 			fi
 		fi
+  chmod -R 777 "$caddybin"
 		/etc/storage/caddy_script.sh
 		if [ "$caddy_wan" = "1" ] ; then
 			if [ "$caddy_file" = "0" ] || [ "$caddy_file" = "2" ]; then
@@ -63,7 +65,8 @@ caddy_start ()
 				fi
 			fi
 		fi
-		logger -t "caddy" "文件管理服务已启动"
+		[ ! -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "文件管理服务已启动"
+  [ -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "启动失败"
 	fi
 }
 
