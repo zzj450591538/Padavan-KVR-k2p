@@ -130,7 +130,7 @@ function done_validating(action){
 							<div>
 							    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
 								<li id="allink" style="display:none">
-								    <a href="Advanced_aliddns.asp"><#menu5_23_1#></a>
+								    <a href="Advanced_aliddns.asp">ddns-go域名解析</a>
 								</li>
 								<li class="active">
 								    <a href="Advanced_ddnsto.asp"><#menu5_32_2#></a>
