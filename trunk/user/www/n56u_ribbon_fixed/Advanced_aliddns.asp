@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><#Web_Title#> - DDNS-GO 域名解析</title>
+<title><#Web_Title#> - Lucky工具箱</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -136,12 +136,12 @@ function change_aliddns_enable_bridge(mflag){
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="box well grad_colour_dark_blue">
-							<h2 class="box_head round_top">DDNS-GO - <#menu5_30#></h2>
+							<h2 class="box_head round_top">Lucky工具箱 - <#menu5_30#></h2>
 							<div class="round_bottom">
 							<div>
 							    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
 								<li class="active">
-								    <a href="Advanced_aliddns.asp">ddns-go域名解析</a>
+								    <a href="Advanced_aliddns.asp">Lucky</a>
 								</li>
 								<li id="dtolink" style="display:none">
 								    <a href="Advanced_ddnsto.asp"><#menu5_32_2#></a>
@@ -156,14 +156,16 @@ function change_aliddns_enable_bridge(mflag){
 							</div>
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
-									<div class="alert alert-info" style="margin: 10px;">ddns-go ，这是一款简单好用的DDNS。自动更新域名解析到公网IP(支持阿里云、腾讯云、Dnspod、Cloudflare、Callback、华为云、百度云、Porkbun、GoDaddy、Google Domain)。</a>
-<div>项目地址: <a href="https://github.com/jeessy2/ddns-go" target="blank">https://github.com/jeessy2/ddns-go</a></div></div>
+									<div class="alert alert-info" style="margin: 10px;">Lucky工具箱 ，这是一款集多种功能的插件，公网神器,ipv6/ipv4端口转发,反向代理,动态域名,语音助手网络唤醒,ipv4内网穿透,计划任务,自动证书等。</a>
+<div>项目地址: <a href="https://github.com/gdy666/lucky" target="blank">https://github.com/gdy666/lucky</a>
+<a href="https://www.right.com.cn/forum/thread-8243984-1-1.html" target="blank">恩山论坛插件介绍</a></div>
+<div>Lucky版本更新请前往<a href="https://github.com/gdy666/lucky-files" target="blank">https://github.com/gdy666/lucky-files</a>查看下载文件后缀为Linux_mipsle_softfloat.tar.gz的文件，解压出lucky 上传至/etc/storage/lucky/文件夹里即可完成更新。</div>
 											
 												
 									</div>
 <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
 										<tr>
-											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启用 DDNS-GO 域名解析</a></th>
+											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启用 Lucky</a></th>
 											<td style="border-top: 0 none;">
 													<div class="main_itoggle">
 													<div id="aliddns_enable_on_of">
@@ -181,22 +183,15 @@ function change_aliddns_enable_bridge(mflag){
 											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启动方式 :</a></th>
 											<td style="border-top: 0 none;">
 												<input type="text"  id="aliddns_ttl" name="aliddns_ttl"  value="<% nvram_get_x("","aliddns_ttl"); %>"  onkeypress="return is_number(this,event);" />
-												<div>&nbsp;<span style="color:#888;"> -l  :WEB界面端口  -f  解析间隔时间</span></div>
+												<div>&nbsp;<span style="color:#888;"> -c  配置文件路径   -p 主页端口</span></div>
 											</td>
 																				<tr id="aliddns_domain_tr" style="display:none;">
 											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">主页地址：</a></th>
 											<td style="border-top: 0 none;">
-												<a href="<% nvram_get_x("", "ddnsgoip"); %>"><% nvram_get_x("", "ddnsgoip"); %></a>											</td>
+												<a href="<% nvram_get_x("", "luckyip"); %>"><% nvram_get_x("", "luckyip"); %></a>											</td>
 										</tr>
 
-										<tr id="row_post_wan_script" style="display:none;">
-											<td colspan="2" style="border-top: 0 none;">
-												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script2')"><span>DDNS_GO 配置文件</span></a>
-												<div id="script2" style="display:none;">
-													<textarea rows="18" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ddns_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ddns_script.sh",""); %></textarea>
-												</div>
-											</td>
-										</tr>
+										
 										
 
 										<tr>
