@@ -25,7 +25,7 @@ aliddns_keep () {
 logger -t "lucky" "守护进程启动"
 sed -Ei '/lucky守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
-*/4 * * * * test -z "\`pidof lucky\`"  && aliddns.sh check & #lucky守护进程
+*/1 * * * * test -z "\`pidof lucky\`"  && aliddns.sh check & #lucky守护进程
 OSC
 }
 
