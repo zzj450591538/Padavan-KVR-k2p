@@ -5,13 +5,14 @@ F="$D/`nvram get http_username`"
 aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
 aliddns_ttl=`nvram get aliddns_ttl`
-[ -z $aliddns_ttl ] && aliddns_ttl="-l :9877 -f 600 -c /etc/storage/ddns_script.sh -skipVerify" && nvram set aliddns_ttl="$aliddns_ttl"
-ddnsgo="/tmp/ddnsgo/ddnsgo"
-[ ! -d /tmp/ddnsgo ] && mkdir -p /tmp/ddnsgo
+[ ! -d /etc/storage/lucky ] && mkdir -p /etc/storage/lucky
+[ -z $aliddns_ttl ] && aliddns_ttl="-c /etc/storage/lucky/lucky.conf -p 8587" && nvram set aliddns_ttl="$aliddns_ttl"
+lucky="/tmp/lucky/lucky"
+[ ! -d /tmp/lucky ] && mkdir -p /tmp/lucky
 
 aliddns_check () {
-if [ "$aliddns_enable" = "1" ] && [ -z "`pidof ddnsgo`" ] ; then
-	logger -t "ddns-go" "重新启动"
+if [ "$aliddns_enable" = "1" ] && [ -z "`pidof lucky`" ] ; then
+	logger -t "lucky" "重新启动"
  aliddns_close
  aliddns_start
 fi
@@ -21,10 +22,10 @@ fi
 }
 
 aliddns_keep () {
-logger -t "ddns-go" "守护进程启动"
-sed -Ei '/ddns-go守护进程|^$/d' "$F"
+logger -t "lucky" "守护进程启动"
+sed -Ei '/lucky守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
-*/4 * * * * test -z "\`pidof ddnsgo\`"  && aliddns.sh check & #ddns-go守护进程
+*/4 * * * * test -z "\`pidof lucky\`"  && aliddns.sh check & #lucky守护进程
 OSC
 }
 
@@ -34,54 +35,43 @@ aliddns_start
 }
 
 aliddns_close () {
-sed -Ei '/ddns-go守护进程|^$/d' "$F"
-killall ddnsgo
-killall -9 ddnsgo
+sed -Ei '/lucky守护进程|^$/d' "$F"
+killall lucky
+killall -9 lucky
 sleep 5
-[ -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "进程已关闭"
+[ -z "`pidof lucky`" ] && logger -t "lucky" "进程已关闭"
 }
 
 aliddns_start () {
 if [ "$aliddns_enable" = "0" ] ; then	
 aliddns_close				
 fi
-initconfig
-logger -t "ddns-go" "正在启动"
-sed -Ei '/ddns-go守护进程|^$/d' "$F"
-killall ddnsgo
-killall -9 ddnsgo
-[ -f /etc/storage/bin/ddnsgo ] && ddnsgo="/etc/storage/bin/ddnsgo"
-if [ ! -s "$ddnsgo" ] ; then
-logger -t "ddns-go" "未找到$ddnsgo ，开始下载"
-curl -L -k -S -o "$ddnsgo" --connect-timeout 10 --retry 3 "https://opt.cn2qq.com/opt-file/ddnsgo"
+logger -t "lucky" "正在启动"
+sed -Ei '/lucky守护进程|^$/d' "$F"
+killall lucky
+killall -9 lucky
+[ -f /etc/storage/bin/lucky ] && ddnsgo="/etc/storage/bin/lucky"
+if [ ! -s "$lucky" ] ; then
+logger -t "luckyo" "未找到$lucky ，开始下载"
+curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
 fi
-chmod 777 "$ddnsgo"
-ddnsgo_ver="$($ddnsgo -v | sed -n '1p')"
-[[ "$($ddnsgo -h 2>&1 | wc -l)" -lt 2 ]] && logger -t "ddns-go" "程序不完整，重新下载" && rm -rf $ddnsgo && kill_ps
-eval "$ddnsgo $aliddns_ttl" &
+chmod 777 "$lucky"
+[[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && logger -t "lucky" "程序不完整，重新下载" && rm -rf $lucky && kill_ps
+eval "$lucky $aliddns_ttl" &
 sleep 8
-[ ! -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "ddnsgo_$ddnsgo_ver 启动成功"
-[ -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "ddnsgo_$ddnsgo_ver 启动失败，20秒后尝试重新启动" && kill_ps
-port=$(echo $aliddns_ttl | awk '{print $2}' | awk -F ':' {'print $2'} | tr -d " " )
+[ ! -z "`pidof lucky`" ] && logger -t "lucky" "启动成功"
+[ -z "`pidof lucky`" ] && logger -t "lucky" "启动失败，看看哪里的问题，20秒后尝试重新启动" && kill_ps
+port=$(echo $aliddns_ttl | awk '{print $4}' | tr -d " " )
 ipaddr=`nvram get lan_ipaddr`
 if [ ! -z "$port" ] ; then
-nvram set ddnsgoip="http://${ipaddr}:${port}"
+nvram set luckyip="http://${ipaddr}:${port}"
 else
-nvram set ddnsgoip="http://${ipaddr}:9877"
+nvram set luckyip="http://${ipaddr}:8587"
 fi
 aliddns_keep
 exit 0
 }
 
-initconfig () {
-if [ ! -s "/etc/storage/ddns_script.sh" ] ; then
-cat > "/etc/storage/ddns_script.sh" <<-\EEE
-notallowwanaccess: true
-
-EEE
-	chmod 755 /etc/storage/ddns_script.sh
-fi
-}
 
 case $1 in
 start)
