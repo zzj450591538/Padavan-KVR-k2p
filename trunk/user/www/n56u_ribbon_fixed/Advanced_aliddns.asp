@@ -159,7 +159,7 @@ function change_aliddns_enable_bridge(mflag){
 									<div class="alert alert-info" style="margin: 10px;">Lucky工具箱 ，这是一款集多种功能的插件，公网神器,ipv6/ipv4端口转发,反向代理,动态域名,语音助手网络唤醒,ipv4内网穿透,计划任务,自动证书等。</a>
 <div>项目地址: <a href="https://github.com/gdy666/lucky" target="blank">https://github.com/gdy666/lucky</a>
 <a href="https://www.right.com.cn/forum/thread-8243984-1-1.html" target="blank">恩山论坛插件介绍</a></div>
-<div>Lucky版本更新请前往<a href="https://github.com/gdy666/lucky-files" target="blank">https://github.com/gdy666/lucky-files</a>查看下载文件后缀为Linux_mipsle_softfloat.tar.gz的文件，解压出lucky 上传至/etc/storage/lucky/文件夹里即可完成更新。</div>
+<div>Lucky版本更新请前往<a href="https://github.com/gdy666/lucky-files" target="blank">https://github.com/gdy666/lucky-files</a>查看下载文件后缀为Linux_mipsle_softfloat.tar.gz的文件，解压出lucky 上传至/etc/storage/bin/文件夹里即可完成更新。</div>
 											
 												
 									</div>
