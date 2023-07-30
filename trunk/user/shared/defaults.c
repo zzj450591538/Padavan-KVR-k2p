@@ -886,7 +886,7 @@ struct nvram_pair router_defaults[] = {
 	{ "ald_root", "48" },
 	{ "ald_domain_id", "0.0.0.0" },
 	{ "ald_no_trash", "" },
-	{ "ald_read_only", "0" },
+	{ "ald_read_only", "1" },
 #endif
 
 	/* DHCP server parameters */
