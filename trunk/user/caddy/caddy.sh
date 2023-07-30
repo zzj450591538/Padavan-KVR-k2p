@@ -14,8 +14,10 @@ caddybin="/tmp/caddy/caddy_filebrowser"
 caddy_start () 
 {
 	if [ "$caddy_enable" = "1" ] ;then
+ logger -t "caddy" "caddy_filebrowser正在启动！"
 		mkdir -p $caddy_dir/caddy
 		if [ ! -f "$caddybin" ]; then
+   logger -t "caddy" "未找到$caddybin，开始下载！"
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser
 				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
