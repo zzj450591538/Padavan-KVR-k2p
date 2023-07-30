@@ -67,7 +67,7 @@ eval "$ddnsgo $aliddns_ttl" &
 sleep 8
 [ ! -z "`pidof ddnsgo`" ] && logger -t "ddns-go" "ddnsgo_$ddnsgo_ver 启动成功"
 [ -z "`pidof ddnsgo`" ] && logger -t ""ddns-go" "ddnsgo_$ddnsgo_ver 启动失败，20秒后尝试重新启动" && kill_ps
-port=$(echo $aliddns_ttl | awk '{print $2}' | awk -F ':' {'print $2'})
+port=$(echo $aliddns_ttl | awk '{print $2}' | awk -F ':' {'print $2'} | tr -d " " )
 ipaddr=`nvram get lan_ipaddr`
 if [ ! -z "$port" ] ; then
 nvram set ddnsgoip="http://${ipaddr}:${port}"
