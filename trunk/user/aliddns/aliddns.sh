@@ -26,7 +26,6 @@ sed -Ei '/ddns-go守护进程|^$/d' "$F"
 cat >> "$F" <<-OSC
 */4 * * * * test -z "\`pidof ddnsgo\`"  && aliddns.sh check & #ddns-go守护进程
 OSC
-fi
 }
 
 kill_ps () {
@@ -101,4 +100,3 @@ keep)
 	aliddns_check
 	;;
 esac
-
