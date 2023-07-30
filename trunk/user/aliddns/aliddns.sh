@@ -6,7 +6,6 @@ D="/etc/storage/cron/crontabs"
 F="$D/`nvram get http_username`"
 aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
-if [ "$aliddns_enable" != "0" ] ; then
 #nvramshow=`nvram showall | grep '=' | grep aliddns | awk '{print gensub(/'"'"'/,"'"'"'\"'"'"'\"'"'"'","g",$0);}'| awk '{print gensub(/=/,"='\''",1,$0)"'\'';";}'` && eval $nvramshow
 aliddns_ttl=`nvram get aliddns_ttl`
 [ -z $aliddns_ttl ] && aliddns_ttl="-l :9877 -f 600 -c /etc/storage/ddns_script.sh -skipVerify" && nvram set aliddns_ttl="$aliddns_ttl"
