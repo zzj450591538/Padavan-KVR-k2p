@@ -3,6 +3,7 @@ upanPath="`df -m | grep /dev/mmcb | grep -E "$(echo $(/usr/bin/find /dev/ -name 
 [ -z "$upanPath" ] && upanPath="`df -m | grep /dev/sd | grep -E "$(echo $(/usr/bin/find /dev/ -name 'sd*') | sed -e 's@/dev/ /dev/@/dev/@g' | sed -e 's@ @|@g')" | grep "/media" | awk '{print $NF}' | sort -u | awk 'NR==1' `"
 alist="$upanPath/alist/alist"
 [ -z "$upanPath" ] && alist="/tmp/alist/alist"
+[ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && alist="/etc/storage/bin/alist"
 alist_upanPath=""
 etcsize=`expr $(df -k | grep "% /etc" | awk 'NR==1' | awk -F' ' '{print $4}' | tr -d "M" ) + 0`
 D="/etc/storage/cron/crontabs"
@@ -168,9 +169,8 @@ config='{
 }'
 [ ! -f $Alistjson ] && touch $Alistjson
 echo "${config}" >${Alistjson}
-   alist_port="$(cat /tmp/alist/data/config.json | grep http_port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
-   [ -z "$alist_port" ] && alist_port="$(cat /tmp/alist/data/config.json | grep port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
    down=1
+   [ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && alist="/etc/storage/bin/alist"
    while [ ! -s "$alist" ] ; do
     down=`expr $down + 1`
     logger -t "AList" "未挂载储存设备, 将下载Mini版8M安装在/tmp/alist/alist,当前/tmp分区剩余$Available_A M"
@@ -248,6 +248,8 @@ echo "${config}" >${Alistjson}
     [ -n "$user" ] && logger -t "AList" "检测到首次启动alist，初始用户:$user  初始密码:$pass"
     [ ! -n "$user" ] && logger -t "AList" "检测到首次启动alist，生成初始用户密码失败" && logger -t "AList" "请在控制台或ssh里输入aliyundrive-webdav.sh admin获取密码"
     fi
+    alist_port="$(cat /tmp/alist/data/config.json | grep http_port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
+   [ -z "$alist_port" ] && alist_port="$(cat /tmp/alist/data/config.json | grep port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
     "$alist" --data /tmp/alist/data server >/tmp/alist/alistserver.txt 2>&1 &
     datasize="$( du -k /tmp/alist/data/data.db-wal | awk '{print $1}' | tr -d "k" )"
     sleep 10
@@ -331,8 +333,6 @@ config='{
 }'
 [ ! -f $Alistjson ] && touch $Alistjson
 echo "${config}" >${Alistjson}
-   alist_port="$(cat /tmp/alist/data/config.json | grep http_port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
-   [ -z "$alist_port" ] && alist_port="$(cat /tmp/alist/data/config.json | grep port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
    tag=$(curl -k --silent "https://api.github.com/repos/alist-org/alist/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 	[ -z "$tag" ] && tag="$( curl -k -L --connect-timeout 20 --silent https://api.github.com/repos/alist-org/alist/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
 	[ -z "$tag" ] && tag="$( curl -k --connect-timeout 20 --silent https://api.github.com/repos/alist-org/alist/releases/latest | grep 'tag_name' | cut -d\" -f4 )"
@@ -413,6 +413,8 @@ echo "${config}" >${Alistjson}
     [ -n "$user" ] && logger -t "AList" "检测到首次启动alist，初始用户:$user  初始密码:$pass"
     [ ! -n "$user" ] && logger -t "AList" "检测到首次启动alist，生成初始用户密码失败" && logger -t "AList" "请在控制台或ssh里输入aliyundrive-webdav.sh admin获取密码"
  fi
+ alist_port="$(cat /tmp/alist/data/config.json | grep http_port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
+[ -z "$alist_port" ] && alist_port="$(cat /tmp/alist/data/config.json | grep port | awk '{print $2}' | awk 'NR==1 {print $1}' | tr -d "," )"
  "$alist" start
  datasize="$( du -k /tmp/alist/data/data.db-wal | awk '{print $1}' | tr -d "k" )"
  sleep 10 
