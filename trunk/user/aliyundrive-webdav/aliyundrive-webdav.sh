@@ -3,7 +3,7 @@ upanPath="`df -m | grep /dev/mmcb | grep -E "$(echo $(/usr/bin/find /dev/ -name 
 [ -z "$upanPath" ] && upanPath="`df -m | grep /dev/sd | grep -E "$(echo $(/usr/bin/find /dev/ -name 'sd*') | sed -e 's@/dev/ /dev/@/dev/@g' | sed -e 's@ @|@g')" | grep "/media" | awk '{print $NF}' | sort -u | awk 'NR==1' `"
 alist="$upanPath/alist/alist"
 [ -z "$upanPath" ] && alist="/tmp/alist/alist"
-[ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && alist="/etc/storage/bin/alist"
+[ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && ln -sf /etc/storage/bin/alist /tmp/alist/alist
 alist_upanPath=""
 etcsize=`expr $(df -k | grep "% /etc" | awk 'NR==1' | awk -F' ' '{print $4}' | tr -d "M" ) + 0`
 D="/etc/storage/cron/crontabs"
@@ -170,7 +170,7 @@ config='{
 [ ! -f $Alistjson ] && touch $Alistjson
 echo "${config}" >${Alistjson}
    down=1
-   [ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && alist="/etc/storage/bin/alist"
+   [ -f /etc/storage/bin/alist ] && [ -z "$upanPath" ] && ln -sf /etc/storage/bin/alist /tmp/alist/alist
    while [ ! -s "$alist" ] ; do
     down=`expr $down + 1`
     logger -t "AList" "未挂载储存设备, 将下载Mini版8M安装在/tmp/alist/alist,当前/tmp分区剩余$Available_A M"
