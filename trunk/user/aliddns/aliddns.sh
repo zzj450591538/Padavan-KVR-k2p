@@ -6,7 +6,7 @@ aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
 aliddns_ttl=`nvram get aliddns_ttl`
 [ ! -d /etc/storage/lucky ] && mkdir -p /etc/storage/lucky
-[ -z $aliddns_ttl ] && aliddns_ttl="-c /etc/storage/lucky/lucky.conf -p 8587" && nvram set aliddns_ttl="$aliddns_ttl"
+[ -z $aliddns_ttl ] && aliddns_ttl="-c /etc/storage/lucky/lucky.conf" && nvram set aliddns_ttl="$aliddns_ttl"
 lucky="/tmp/lucky/lucky"
 [ ! -d /tmp/lucky ] && mkdir -p /tmp/lucky
 
@@ -57,16 +57,16 @@ curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdeliv
 fi
 chmod 777 "$lucky"
 [[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && logger -t "lucky" "程序不完整，重新下载" && rm -rf $lucky && kill_ps
-eval "$lucky $aliddns_ttl" &
+ $lucky $aliddns_ttl >/tmp/lucky/lucky.log &
 sleep 8
 [ ! -z "`pidof lucky`" ] && logger -t "lucky" "启动成功"
 [ -z "`pidof lucky`" ] && logger -t "lucky" "启动失败，看看哪里的问题，20秒后尝试重新启动" && kill_ps
-port=$(echo $aliddns_ttl | awk '{print $4}' | tr -d " " )
+port=$(cat /tmp/lucky/lucky.log | grep "后台登录网址:" | awk '{print$4}' | tr -d " " | awk -F ':' '{print $3}' )
 ipaddr=`nvram get lan_ipaddr`
 if [ ! -z "$port" ] ; then
 nvram set luckyip="http://${ipaddr}:${port}"
 else
-nvram set luckyip="http://${ipaddr}:8587"
+nvram set luckyip=""
 fi
 aliddns_keep
 exit 0
