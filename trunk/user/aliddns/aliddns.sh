@@ -50,7 +50,7 @@ logger -t "lucky" "正在启动"
 sed -Ei '/lucky守护进程|^$/d' "$F"
 killall lucky
 killall -9 lucky
-[ -f /etc/storage/bin/lucky ] && ddnsgo="/etc/storage/bin/lucky"
+[ -f /etc/storage/bin/lucky ] && lucky="/etc/storage/bin/lucky"
 if [ ! -s "$lucky" ] ; then
 logger -t "luckyo" "未找到$lucky ，开始下载"
 curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
