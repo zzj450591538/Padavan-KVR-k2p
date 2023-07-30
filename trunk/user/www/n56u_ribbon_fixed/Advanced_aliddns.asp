@@ -183,7 +183,7 @@ function change_aliddns_enable_bridge(mflag){
 											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启动方式 :</a></th>
 											<td style="border-top: 0 none;">
 												<input type="text"  id="aliddns_ttl" name="aliddns_ttl"  value="<% nvram_get_x("","aliddns_ttl"); %>"  onkeypress="return is_number(this,event);" />
-												<div>&nbsp;<span style="color:#888;"> -c  配置文件路径   -p 主页端口</span></div>
+												<div>&nbsp;<span style="color:#888;"> -c  配置文件路径 </span></div>
 											</td>
 																				<tr id="aliddns_domain_tr" style="display:none;">
 											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">主页地址：</a></th>
