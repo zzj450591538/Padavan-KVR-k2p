@@ -19,31 +19,20 @@ caddy_start ()
 		if [ ! -f "$caddybin" ]; then
    logger -t "caddy" "未找到$caddybin，开始下载！"
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser
-				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-					logger -t "caddy" "caddy_filebrowser二进制文件下载失败！"
-                                    curl -L -k -S -o "$caddy_dir/caddy/caddy_filebrowser" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
-				else
-					logger -t "caddy" "caddy_filebrowser二进制文件下载成功"
-					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
-				fi
+				 curl -L -k -S -o "$caddy_dir/caddy/caddy_filebrowser" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
                                  if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，重新下载！"
                                     curl -L -k -S -o "$caddy_dir/caddy/caddy_filebrowser" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/chongshengB/rt-n56u@master/trunk/user/caddy/caddy_filebrowser"
-					nvram set caddy_enable=0
-					caddy_close
 				else
 					logger -t "caddy" "caddy_filebrowser二进制文件下载成功"
 					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
 				fi
-                                 if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-				 nvram set caddy_enable=0
-                                 logger -t "caddy" "重复下载失败，可能是地址失效或者网络异常！程序退出"
-                                  caddy_close
-				  fi
+                                
 			fi
 		fi
   chmod -R 777 "$caddybin"
+  caddy-ver=$($caddybin -version | sed -n '1p')
+  [[ "$($caddybin -v 2>&1 | wc -l)" -lt 2 ]] && logger -t "caddy" "程序不完整，重新下载" && rm -rf $caddybin && caddy_dl
 		/etc/storage/caddy_script.sh
 		if [ "$caddy_wan" = "1" ] ; then
 			if [ "$caddy_file" = "0" ] || [ "$caddy_file" = "2" ]; then
@@ -67,11 +56,15 @@ caddy_start ()
 				fi
 			fi
 		fi
-		[ ! -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "文件管理服务已启动"
-  [ -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "启动失败"
+		[ ! -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "caddy_filebrowser_${caddy-ver}文件管理服务已启动"
+  [ -z "`pidof caddy_filebrowser`" ] && logger -t "caddy" "启动失败，看看什么问题？程序退出" 
 	fi
 }
-
+caddy_dl () 
+{
+sleep 20
+caddy_start
+}
 caddy_close () 
 {
 	iptables -t filter -D INPUT -p tcp --dport $caddyf_wan_port -j ACCEPT
