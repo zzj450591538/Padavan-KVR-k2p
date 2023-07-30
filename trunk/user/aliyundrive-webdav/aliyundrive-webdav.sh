@@ -397,10 +397,15 @@ echo "${config}" >${Alistjson}
    [ ! -z "$alist_ver" ] && logger -t "AList" "当前$alist 版本$alist_ver,准备启动"
    if [ ! -z "$tag" ] && [ ! -z "$alist_ver" ] ; then
       if [ "$tag"x != "$alist_ver"x ] ; then
+      alistup=$(nvram get ald_read_only) 
+      if [ "$alistup" = "1" ] ; then
          logger -t "AList" "检测到新版本alist-$tag，当前安装版本$alist_ver，开始下载新版本"
 	 rm -rf "$upanPath/alist/alist"
          rm -rf "$upanPath/alist/alist-linux-musl-mipsle.tar.gz"
          alist_down
+	 else
+       logger -t "AList" "检测到新版本alist-$tag，当前安装版本$alist_ver，未启用自动更新，跳过更新"
+       fi
       fi
    fi
    chmod 777 "$alist"
