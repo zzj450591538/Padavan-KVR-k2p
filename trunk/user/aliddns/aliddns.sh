@@ -53,13 +53,13 @@ killall -9 lucky
 [ -f /etc/storage/bin/lucky ] && lucky="/etc/storage/bin/lucky"
 if [ ! -s "$lucky" ] ; then
 logger -t "luckyo" "未找到$lucky ，开始下载"
-curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
+curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
 chmod 777 "$lucky"
 [[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && rm -rf $lucky
 fi
 if [ ! -s "$lucky" ] ; then
 logger -t "luckyo" "下载失败，重新下载"
-curl -L -k -S -o "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/lucky"
+curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/lucky"
 fi
 chmod 777 "$lucky"
 luckyver=$($lucky -info | grep "Version" | awk -F 'Version' '{print $2}'| tr -d 'A-Z' | tr -d 'a-z' | tr -d ":" | tr -d "," | tr -d '"')
