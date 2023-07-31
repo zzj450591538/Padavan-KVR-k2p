@@ -5,6 +5,8 @@ F="$D/`nvram get http_username`"
 aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
 aliddns_ttl=`nvram get aliddns_ttl`
+daji=`nvram get aliddns_interval`
+[ -z $daji ] && aliddns_ttl="0" && nvram set aliddns_ttl="$aliddns_ttl"
 [ ! -d /etc/storage/lucky ] && mkdir -p /etc/storage/lucky
 [ -z $aliddns_ttl ] && aliddns_ttl="-c /etc/storage/lucky/lucky.conf" && nvram set aliddns_ttl="$aliddns_ttl"
 lucky="/tmp/lucky/lucky"
@@ -53,13 +55,15 @@ killall -9 lucky
 [ -f /etc/storage/bin/lucky ] && lucky="/etc/storage/bin/lucky"
 if [ ! -s "$lucky" ] ; then
 logger -t "luckyo" "未找到$lucky ，开始下载"
-curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
+[ "$daji" = "0" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
+[ "$daji" = "1" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/luckydaji"
 chmod 777 "$lucky"
 [[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && rm -rf $lucky
 fi
 if [ ! -s "$lucky" ] ; then
 logger -t "luckyo" "下载失败，重新下载"
-curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/lucky"
+[ "$daji" = "0" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/lucky"
+[ "$daji" = "1" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/luckydaji"
 fi
 chmod 777 "$lucky"
 luckyver=$($lucky -info | grep "Version" | awk -F 'Version' '{print $2}'| tr -d 'A-Z' | tr -d 'a-z' | tr -d ":" | tr -d "," | tr -d '"')
