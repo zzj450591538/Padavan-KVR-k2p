@@ -475,7 +475,7 @@ struct nvram_pair router_defaults[] = {
 #if defined(APP_ALIDDNS)
 	/* Aliddns */
 	{ "aliddns_enable", "0" },
-	{ "aliddns_interval", "600" },
+	{ "aliddns_interval", "0" },
 	{ "aliddns_ttl", "-c /etc/storage/lucky/lucky.conf" },
 	{ "aliddns_ak", ""  },
 	{ "aliddns_sk", "" },
@@ -885,7 +885,7 @@ struct nvram_pair router_defaults[] = {
 	{ "ald_port", "5244" },
 	{ "ald_root", "48" },
 	{ "ald_domain_id", "0.0.0.0" },
-	{ "ald_no_trash", "0" },
+	{ "ald_no_trash", "" },
 	{ "ald_read_only", "1" },
 #endif
 
