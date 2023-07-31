@@ -6,7 +6,7 @@ aliddns_enable=`nvram get aliddns_enable`
 [ -z $aliddns_enable ] && aliddns_enable=0 && nvram set aliddns_enable=0
 aliddns_ttl=`nvram get aliddns_ttl`
 daji=`nvram get aliddns_interval`
-[ -z $daji ] && aliddns_ttl="0" && nvram set aliddns_ttl="$aliddns_ttl"
+[ -z $daji ] && daji="0" && nvram set aliddns_interval="$daji"
 [ ! -d /etc/storage/lucky ] && mkdir -p /etc/storage/lucky
 [ -z $aliddns_ttl ] && aliddns_ttl="-c /etc/storage/lucky/lucky.conf" && nvram set aliddns_ttl="$aliddns_ttl"
 lucky="/tmp/lucky/lucky"
