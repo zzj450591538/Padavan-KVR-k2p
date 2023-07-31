@@ -185,8 +185,8 @@ function change_aliddns_enable_bridge(mflag){
                                                 <select id="aliddns_interval" name="aliddns_interval" class="input" onchange="aliddns_interval()">
                                                     <option value="0" <% nvram_match_x("","aliddns_interval", "0","selected"); %>>普通版</option>
                                                     <option value="1" <% nvram_match_x("","aliddns_interval", "1","selected"); %>>全能版</option>
-					                                             </select><div>&nbsp;<span style="color:#888;">普通版：目前比全能版大吉少一个内置FileBrowser模块</span></div>  
-<div>&nbsp;<span style="color:#888;">全能版（daji）：包含所有模块，全功能版本</span></div>   
+					                                             </select><div>&nbsp;<span style="color:#888;">普通版：目前比全能版大吉少一个内置FileBrowser模块，约5M</span></div>  
+<div>&nbsp;<span style="color:#888;">全能版（daji）：包含所有模块，全功能版本，约12M</span></div>   
 											</td>
 </tr>
 										<tr id="aliddns_ttl_tr" style="display:none;">
