@@ -75,7 +75,7 @@ function change_aliddns_enable_bridge(mflag){
 	var m = document.form.aliddns_enable[0].checked;
 	showhide_div("aliddns_ak_tr", m);
 	showhide_div("aliddns_sk_tr", m);
-	showhide_div("aliddns_interval_tr", m);
+	showhide_div("aliddns_interval", m);
 	showhide_div("aliddns_ttl_tr", m);
 	showhide_div("aliddns_domain_tr", m);
 	showhide_div("aliddns_domain2_tr", m);
@@ -157,9 +157,9 @@ function change_aliddns_enable_bridge(mflag){
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">Lucky工具箱 ，这是一款集多种功能的插件，公网神器,ipv6/ipv4端口转发,反向代理,动态域名,语音助手网络唤醒,ipv4内网穿透,计划任务,自动证书等。</a>
-<div>项目地址: <a href="https://github.com/gdy666/lucky" target="blank">https://github.com/gdy666/lucky</a>
-<a href="https://www.right.com.cn/forum/thread-8243984-1-1.html" target="blank">恩山论坛插件介绍</a></div>
-<div>Lucky版本更新请前往<a href="https://github.com/gdy666/lucky-files" target="blank">https://github.com/gdy666/lucky-files</a>查看下载文件后缀为Linux_mipsle_softfloat.tar.gz的文件，解压出lucky 上传至/etc/storage/bin/文件夹里即可完成更新。</div>
+<div>项目地址: <a href="https://github.com/gdy666/lucky" target="blank">https://github.com/gdy666/lucky 。</a>                                  <a href="http://lucky666.cn" target="blank">使用指南。 </a>                   <a href="https://www.right.com.cn/forum/thread-8243984-1-1.html" target="blank">恩山论坛反馈。 </a>
+<a href="https://url21.ctfile.com/d/44547821-55537427-a5525e?p=16601" target="blank">程序下载。 </a></div>
+<div>Lucky版本更新请下载文件后缀为Linux_mipsle_softfloat.tar.gz的文件，解压出 lucky 上传至/etc/storage/bin/文件夹里即可完成更新。</div>
 											
 												
 									</div>
@@ -176,11 +176,21 @@ function change_aliddns_enable_bridge(mflag){
 													<input type="radio" value="1" name="aliddns_enable" id="aliddns_enable_1" class="input" value="1" onClick="change_aliddns_enable_bridge(1);" <% nvram_match_x("", "aliddns_enable", "1", "checked"); %> /><#checkbox_Yes#>
 													<input type="radio" value="0" name="aliddns_enable" id="aliddns_enable_0" class="input" value="0" onClick="change_aliddns_enable_bridge(1);" <% nvram_match_x("", "aliddns_enable", "0", "checked"); %> /><#checkbox_No#>
 												</div>
-											</td>
 
+											</td>
 										</tr>
+						<tr id="aliddns_interval" style="display:none;">
+											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启动模式:</a></th>
+											<td style="border-top: 0 none;">
+                                                <select id="aliddns_interval" name="aliddns_interval" class="input" onchange="aliddns_interval()">
+                                                    <option value="0" <% nvram_match_x("","aliddns_interval", "0","selected"); %>>普通版</option>
+                                                    <option value="1" <% nvram_match_x("","aliddns_interval", "1","selected"); %>>全能版</option>
+					                                             </select><div>&nbsp;<span style="color:#888;">普通版：目前比全能版大吉少一个内置FileBrowser模块</span></div>  
+<div>&nbsp;<span style="color:#888;">全能版（daji）：包含所有模块，全功能版本</span></div>   
+											</td>
+</tr>
 										<tr id="aliddns_ttl_tr" style="display:none;">
-											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启动方式 :</a></th>
+											<th width="30%" style="border-top: 0 none;" onmouseover="openTooltip(this, 26, 9);">启动命令 :</a></th>
 											<td style="border-top: 0 none;">
 												<input type="text"  id="aliddns_ttl" name="aliddns_ttl"  value="<% nvram_get_x("","aliddns_ttl"); %>"  onkeypress="return is_number(this,event);" />
 												<div>&nbsp;<span style="color:#888;"> -c  配置文件路径 </span></div>
