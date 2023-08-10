@@ -238,11 +238,11 @@ rules() {
         [ -n "$ip44" ] && logger -t "ZeroTier" ""$zt0"_ipv4:$ip44"
         [ -z "$ip44" ] && [ -z "$ip66" ] && logger -t "ZeroTier" "未获取到zerotier ip请前往官网检查是否勾选此路由加入网络并分配IP"
 	del_rules
-	iptables -A INPUT -i $zt0 -j ACCEPT
-	iptables -A FORWARD -i $zt0 -o $zt0 -j ACCEPT
-	iptables -A FORWARD -i $zt0 -j ACCEPT
+	iptables -I INPUT -i $zt0 -j ACCEPT
+	iptables -I FORWARD -i $zt0 -o $zt0 -j ACCEPT
+	iptables -I FORWARD -i $zt0 -j ACCEPT
 	if [ $nat_enable -eq 1 ]; then
-		iptables -t nat -A POSTROUTING -o $zt0 -j MASQUERADE
+		iptables -t nat -I POSTROUTING -o $zt0 -j MASQUERADE
 		ip_segment="$(ip route | grep "dev $zt0  proto kernel" | awk '{print $1}')"
 		iptables -t nat -A POSTROUTING -s $ip_segment -j MASQUERADE
 		zero_route "add"
