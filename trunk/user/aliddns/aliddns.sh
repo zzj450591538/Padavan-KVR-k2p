@@ -33,6 +33,7 @@ OSC
 
 kill_ps () {
 sleep 20
+logger -t "lucky" "多次下载失败可关闭程序后手动下载https://url21.ctfile.com/d/44547821-55537427-a5525e?p=16601 带Linux_mipsle_softfloat的压缩包解压出lucky上传至 $lucky"
 aliddns_start
 }
 
@@ -54,14 +55,14 @@ killall lucky
 killall -9 lucky
 [ -f /etc/storage/bin/lucky ] && lucky="/etc/storage/bin/lucky"
 if [ ! -s "$lucky" ] ; then
-logger -t "luckyo" "未找到$lucky ，开始下载"
+logger -t "lucky" "未找到$lucky ，开始下载"
 [ "$daji" = "0" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/lucky"
 [ "$daji" = "1" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://fastly.jsdelivr.net/gh/lmq8267/Padavan-KVR-k2p@releases/download/lucky/luckydaji"
 chmod 777 "$lucky"
 [[ "$($lucky -h 2>&1 | wc -l)" -lt 2 ]] && rm -rf $lucky
 fi
 if [ ! -s "$lucky" ] ; then
-logger -t "luckyo" "下载失败，重新下载"
+logger -t "lucky" "下载失败，重新下载"
 [ "$daji" = "0" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/lucky"
 [ "$daji" = "1" ]  && curl -L -k -S -o  "$lucky" --connect-timeout 10 --retry 3 "https://github.com/lmq8267/Padavan-KVR-k2p/releases/download/lucky/luckydaji"
 fi
