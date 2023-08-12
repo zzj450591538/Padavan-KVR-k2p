@@ -47,10 +47,11 @@ function initial(){
 	show_footer();
 }
 function button_ald_port(){
-		var port = '5244';
-		var porturl ='http://' + window.location.hostname + ":" + port;
-		//alert(porturl);
-		window.open(porturl,'ald_port');
+        var ald_url="http";
+	var http_url=lan_ipaddr;
+	ald_url+="://"+http_url+":"+"<% nvram_get_x("","ald_port"); %>";
+	window_ald = window.open(ald_url, "ald_port");
+	window_ald.focus();
 }
 function fill_status(status_code){
 	var stext = "Unknown";
