@@ -87,18 +87,18 @@ exit 0
 
 case $1 in
 start)
-	aliddns_start
+	aliddns_start &
 	;;
 check)
-	aliddns_check
+	aliddns_check &
 	;;
 stop)
-	aliddns_close
+	aliddns_close &
 	;;
 keep)
 	aliddns_keep
 	;;
 *)
-	aliddns_check
+	aliddns_check &
 	;;
 esac
