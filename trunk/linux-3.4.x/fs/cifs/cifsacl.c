@@ -187,12 +187,11 @@ cifs_idmap_key_destroy(struct key *key)
 	kfree(key->payload.data);
 }
 
-struct key_type cifs_idmap_key_type = {
+static struct key_type cifs_idmap_key_type = {
 	.name        = "cifs.idmap",
 	.instantiate = cifs_idmap_key_instantiate,
 	.destroy     = cifs_idmap_key_destroy,
 	.describe    = user_describe,
-	.match       = user_match,
 };
 
 static void
