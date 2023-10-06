@@ -87,5 +87,5 @@ jobs:
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: Padavan-KVR-K2P-USB
+        name: Padavan-KVR-NEWIFI3
         path: /opt/images
