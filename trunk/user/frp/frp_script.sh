@@ -52,7 +52,7 @@ EOF
 frpc="/tmp/frp/frpc"
 frps="/tmp/frp/frps"
 [ -f /etc/storage/frpc ] && frpc="/etc/storage/frpc"
-[ -f /etc/storage/frps ] && frpc="/etc/storage/frps"
+[ -f /etc/storage/frps ] && frps="/etc/storage/frps"
 frpc_enable=`nvram get frpc_enable`
 frps_enable=`nvram get frps_enable`
 if [ "$frpc_enable" = "1" ] ; then
